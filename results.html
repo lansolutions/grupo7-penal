@@ -7,24 +7,26 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;height:100%;background:#0a1628;font-family:'Segoe UI',sans-serif;color:#f1f5f9;overflow:hidden}
-.wrap{width:100%;height:100%;overflow:hidden;padding:12px;display:flex;flex-direction:column;gap:10px}
+.wrap{width:100%;height:100%;overflow:hidden;padding:12px;display:flex;flex-direction:column;gap:8px}
+.wrap::-webkit-scrollbar{width:4px}
+.wrap::-webkit-scrollbar-thumb{background:rgba(232,184,75,.3);border-radius:4px}
 .aguarda{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#475569;gap:10px}
 .aguarda .icon{font-size:2rem;animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
-.rcard{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:12px 14px;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center}
+.rcard{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:12px 14px;display:flex;flex-direction:row;align-items:center;gap:16px;flex:1;min-height:0;overflow:hidden}.rcard-left{flex:0 0 220px;display:flex;flex-direction:column;justify-content:center;gap:3px;min-width:0}.rcard-right{flex:1;display:flex;align-items:center;justify-content:center;min-width:0;overflow:hidden}
 .tipo-badge{font-size:.55rem;letter-spacing:3px;text-transform:uppercase;color:#7a9bbf;margin-bottom:4px}
 .ptxt{font-size:.8rem;font-weight:600;color:#f1f5f9;line-height:1.3;margin-bottom:8px}
 .votos{font-size:.6rem;color:#475569;margin-bottom:8px}
 /* word cloud */
-.wc-wrap{display:flex;flex-wrap:wrap;gap:5px;align-content:flex-start;flex:1;overflow:hidden}
+.wc-wrap{display:flex;flex-wrap:wrap;gap:5px;align-content:flex-start;width:100%;overflow:hidden}
 .wc-word{padding:3px 9px;border-radius:16px;background:rgba(232,184,75,.1);border:1px solid rgba(232,184,75,.2);color:#e8b84b;font-weight:600}
 /* barras */
-.bar-item{margin-bottom:7px}
+.bar-item{margin-bottom:5px;width:100%}
 .bar-label{display:flex;justify-content:space-between;font-size:.7rem;color:#cbd5e1;margin-bottom:3px}
 .bar-track{height:14px;background:rgba(255,255,255,.06);border-radius:6px;overflow:hidden}
 .bar-fill{height:100%;border-radius:6px;background:linear-gradient(to right,#e8b84b,#4e9af1);transition:width .6s ease}
 /* escala */
-.scale-display{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;justify-content:center;min-height:0}
+.scale-display{display:flex;flex-direction:column;align-items:center;gap:4px;justify-content:center;width:100%}
 .scale-num{font-size:2.2rem;font-weight:900;color:#e8b84b}
 .scale-sub{font-size:.62rem;color:#7a9bbf;text-align:center}
 .scale-mini-bars{display:flex;gap:5px;align-items:flex-end;height:40px}
@@ -68,6 +70,7 @@ function render() {
     return;
   }
   wrapEl.innerHTML = ids.map(id => renderCard(id)).join("");
+  setTimeout(adjustCards, 50);
 }
 
 function renderCard(id) {
@@ -102,14 +105,38 @@ function renderCard(id) {
   }
 
   return `<div class="rcard">
-    <div class="tipo-badge">${tipoLabel(p.tipo)}</div>
-    <div class="ptxt">${p.texto}</div>
-    <div class="votos">${total} resposta${total!==1?"s":""}</div>
-    ${corpo}
+    <div class="rcard-left">
+      <div class="tipo-badge">${tipoLabel(p.tipo)}</div>
+      <div class="ptxt">${p.texto}</div>
+      <div class="votos">${total} resposta${total!==1?"s":""}</div>
+    </div>
+    <div class="rcard-right">${corpo}</div>
   </div>`;
 }
 
 function tipoLabel(t){return{wordcloud:"☁️ Nuvem",enquete:"⚖️ Enquete",escala:"🌡️ Termômetro"}[t]||t;}
+
+function adjustCards() {
+  const cards = wrapEl.querySelectorAll('.rcard');
+  const n = cards.length;
+  if (!n) return;
+  const wrapH = wrapEl.clientHeight;
+  const gap = 10;
+  const padding = 24;
+  const available = wrapH - padding - (gap * (n - 1));
+  const perCard = Math.floor(available / n);
+  if (perCard >= 110) {
+    // Cabe tudo na tela — distribuir igualmente
+    cards.forEach(c => { c.style.flex = '1'; c.style.minHeight = '0'; });
+    wrapEl.style.overflowY = 'hidden';
+  } else {
+    // Muitos cards — usar altura mínima e habilitar scroll
+    const minH = Math.max(110, Math.min(160, Math.floor(wrapH / 3)));
+    cards.forEach(c => { c.style.flex = 'none'; c.style.minHeight = minH + 'px'; });
+    wrapEl.style.overflowY = 'auto';
+  }
+}
+
 </script>
 </body>
 </html>

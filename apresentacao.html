@@ -523,22 +523,22 @@ tr:nth-child(even) td{background:rgba(255,255,255,.02)}
   <div class="blob" style="width:380px;height:380px;top:-100px;right:-80px;background:#e8b84b;opacity:.13;animation:fl1 9s ease-in-out infinite"></div>
   <div class="blob" style="width:260px;height:260px;bottom:-70px;left:-60px;background:#4e9af1;opacity:.10;animation:fl2 12s ease-in-out infinite"></div>
   <canvas id="pc13" style="position:absolute;inset:0;z-index:1"></canvas>
-  <div style="position:relative;z-index:2;width:92%;display:flex;flex-direction:column;gap:10px;height:96%;justify-content:center;padding:8px 0">
+  <div id="s13-wrap" style="position:relative;z-index:2;width:92%;display:flex;flex-direction:column;gap:10px;height:96%;justify-content:flex-start;padding:8px 0">
 
-    <!-- IFRAME RESULTADOS — topo, grande -->
-    <div class="rv" style="width:100%;border-radius:12px;overflow:hidden;border:2px solid rgba(232,184,75,.3);box-shadow:0 0 30px rgba(232,184,75,.08)">
-      <div style="background:rgba(232,184,75,.08);padding:5px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(232,184,75,.15)">
+    <!-- IFRAME RESULTADOS -->
+    <div id="results-container" style="width:100%;border-radius:12px;overflow:hidden;border:2px solid rgba(232,184,75,.3);box-shadow:0 0 30px rgba(232,184,75,.08);flex:1;min-height:0;display:flex;flex-direction:column">
+      <div style="background:rgba(232,184,75,.08);padding:5px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(232,184,75,.15);flex-shrink:0" id="results-header">
         <span style="font-size:.75rem">📊</span>
         <span style="font-size:.65rem;font-weight:600;color:#e8b84b;letter-spacing:2px;text-transform:uppercase">Resultado ao vivo</span>
       </div>
       <iframe id="results-frame" src="https://lansolutions.github.io/grupo7-penal/results.html"
-        width="100%" height="380" frameborder="0" scrolling="no"
-        style="display:block;background:#0a1628;border-radius:0 0 10px 10px;overflow:hidden">
+        width="100%" frameborder="0" scrolling="no"
+        style="display:block;background:#0a1628;border-radius:0 0 10px 10px;border:none;width:100%">
       </iframe>
     </div>
 
-    <!-- BLOCO OBRIGADO — rodapé compacto -->
-    <div class="rv" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;flex-shrink:0">
+    <!-- BLOCO OBRIGADO -->
+    <div class="rv" id="s13-footer" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;flex-shrink:0">
       <div style="display:flex;align-items:center;gap:10px">
         <span style="font-size:1.5rem;animation:float 3s ease-in-out infinite">⚖️</span>
         <div>
@@ -661,6 +661,38 @@ function updateThermo(id){
 
 // Init first slide
 animSlide(slides[0]);
+
+// Resize dinâmico do iframe de resultados
+function fitResultsIframe() {
+  const wrap    = document.getElementById('s13-wrap');
+  const header  = document.getElementById('results-header');
+  const footer  = document.getElementById('s13-footer');
+  const iframe  = document.getElementById('results-frame');
+  const container = document.getElementById('results-container');
+  if (!wrap || !iframe || !container) return;
+
+  const wrapH   = wrap.getBoundingClientRect().height;
+  const footerH = footer ? footer.getBoundingClientRect().height : 0;
+  const headerH = header ? header.getBoundingClientRect().height : 0;
+  const gap     = 10;
+  const iframeH = Math.floor(wrapH - footerH - headerH - gap - 4);
+  iframe.style.height = iframeH + 'px';
+}
+
+// Rodar ao carregar e sempre que o slide 13 ficar ativo
+const ro = new ResizeObserver(() => fitResultsIframe());
+const s13wrap = document.getElementById('s13-wrap');
+if (s13wrap) ro.observe(s13wrap);
+window.addEventListener('resize', fitResultsIframe);
+fitResultsIframe();
+
+// Reajustar ao navegar para o slide 13
+const origGoTo = window.goTo;
+window.goTo = function(n) {
+  if (typeof origGoTo === 'function') origGoTo(n);
+  setTimeout(fitResultsIframe, 100);
+};
+
 </script>
 </body>
 </html>
