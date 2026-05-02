@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extinção da Punibilidade – Grupo 7</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#0a1628;font-family:'DM Sans',sans-serif;color:#f1f5f9}
+.deck{width:100%;height:100%;position:relative}
+.slide{position:absolute;inset:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;opacity:0;transform:translateY(18px) scale(0.98);transition:opacity .55s ease,transform .55s ease;pointer-events:none;overflow:auto;background:#0a1628}
+.slide.active{opacity:1;transform:none;pointer-events:all}
+
+/* gradient blobs */
+.blob{position:absolute;border-radius:50%;filter:blur(72px);pointer-events:none}
+@keyframes fl1{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}}
+@keyframes fl2{0%,100%{transform:translate(0,0)}50%{transform:translate(-35px,25px)}}
+@keyframes fl3{0%,100%{transform:translate(0,0)}50%{transform:translate(25px,20px)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes glow{0%,100%{text-shadow:0 0 20px rgba(232,184,75,.5)}50%{text-shadow:0 0 35px rgba(232,184,75,.9),0 0 60px rgba(232,184,75,.3)}}
+
+/* nav */
+.nav{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;z-index:200;background:rgba(255,255,255,.06);backdrop-filter:blur(12px);padding:6px 18px;border-radius:30px;border:1px solid rgba(255,255,255,.1)}
+.nbtn{width:32px;height:32px;border:none;background:rgba(255,255,255,.08);color:#e8b84b;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.nbtn:hover{background:rgba(232,184,75,.22)}
+.dots{display:flex;gap:6px}
+.dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:all .25s}
+.dot.active{background:#e8b84b;transform:scale(1.4)}
+.nctr{font-size:.7rem;color:#7a9bbf;min-width:36px;text-align:center}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(16px)}
+
+/* glass card */
+.gc{background:rgba(255,255,255,.055);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:18px 22px}
+.gc:hover{transform:translateY(-2px);transition:transform .2s}
+
+/* qr badge */
+.qr-badge{position:absolute;top:18px;right:18px;z-index:10;display:flex;flex-direction:column;align-items:center;gap:4px}
+.qr-badge svg{width:64px;height:64px;border-radius:8px;background:#fff;padding:4px}
+.qr-badge span{font-size:.55rem;color:#7a9bbf;text-align:center;max-width:70px;line-height:1.3}
+
+/* tag */
+.tag{font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:#7a9bbf;margin-bottom:6px}
+.gold{color:#e8b84b}
+.blue{color:#4e9af1}
+.purple{color:#a78bfa}
+
+/* table */
+table{width:100%;border-collapse:collapse;font-size:.75rem}
+th{padding:7px 10px;text-align:left;border-bottom:2px solid rgba(232,184,75,.25);color:#e8b84b;font-weight:600}
+td{padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.06);color:#cbd5e1;vertical-align:middle}
+tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+
+/* bar */
+.bar-wrap{flex:1;height:14px;background:rgba(255,255,255,.06);border-radius:6px;overflow:hidden}
+.bar-fill{height:100%;width:0;border-radius:6px;transition:width .7s ease}
+
+/* quiz */
+.qopt{cursor:pointer;border:1.5px solid rgba(255,255,255,.12);border-radius:9px;padding:9px 14px;font-size:.8rem;transition:all .2s;background:rgba(255,255,255,.03)}
+.qopt:hover{border-color:#e8b84b;background:rgba(232,184,75,.08)}
+.qopt.correct{border-color:#22c55e;background:rgba(34,197,94,.13);color:#86efac}
+.qopt.wrong{border-color:#ef4444;background:rgba(239,68,68,.1);color:#fca5a5}
+.qfb{display:none;margin-top:8px;padding:8px 12px;border-radius:8px;font-size:.75rem;font-weight:500}
+.qfb.show{display:block}
+.qfb.ok{background:rgba(34,197,94,.13);color:#86efac;border:1px solid #22c55e}
+.qfb.err{background:rgba(239,68,68,.1);color:#fca5a5;border:1px solid #ef4444}
+
+/* VF */
+.vfopt{cursor:pointer;border:1.5px solid rgba(255,255,255,.12);border-radius:9px;padding:8px 20px;font-size:.82rem;font-weight:600;transition:all .2s;background:rgba(255,255,255,.03)}
+.vfopt:hover{border-color:#e8b84b;background:rgba(232,184,75,.08)}
+.vfopt.vf-correct{border-color:#22c55e;background:rgba(34,197,94,.13);color:#86efac}
+.vfopt.vf-wrong{border-color:#ef4444;background:rgba(239,68,68,.1);color:#fca5a5}
+
+/* wooclap slide */
+.woo-card{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:32px 36px;display:flex;flex-direction:column;align-items:center;gap:18px;max-width:60%}
+.woo-qr{width:160px;height:160px;background:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;padding:8px}
+.woo-qr svg{width:100%;height:100%}
+</style>
+</head>
+<body>
+<div class="deck">
+
+<!-- ===== S1 TÍTULO ===== -->
+<div class="slide active" data-s="1">
+  <div class="blob" style="width:380px;height:380px;top:-100px;right:-80px;background:#e8b84b;opacity:.10;animation:fl1 9s ease-in-out infinite"></div>
+  <div class="blob" style="width:260px;height:260px;bottom:-70px;left:-60px;background:#4e9af1;opacity:.08;animation:fl2 12s ease-in-out infinite"></div>
+  <canvas id="pc1" style="position:absolute;inset:0;z-index:1"></canvas>
+  <div style="position:relative;z-index:2;text-align:center;padding:0 40px">
+    <div style="font-size:64px;animation:float 3s ease-in-out infinite" class="rv">⚖️</div>
+    <h1 class="rv" style="font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:900;background:linear-gradient(135deg,#e8b84b,#4e9af1,#e8b84b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:10px 0 8px;animation:glow 3s ease-in-out infinite">Extinção da Punibilidade</h1>
+    <p class="rv" style="font-size:.72rem;letter-spacing:5px;text-transform:uppercase;color:#7a9bbf;margin-bottom:20px">Direito Penal · Art. 107 CP · Grupo 7</p>
+    <p class="rv" style="font-size:.68rem;letter-spacing:3px;text-transform:uppercase;color:#a78bfa;margin-bottom:8px">3º Semestre · 2026/1</p>
+    <div class="rv" style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px">
+      <span style="background:rgba(232,184,75,.1);border:1px solid rgba(232,184,75,.25);border-radius:20px;padding:4px 14px;font-size:.68rem;color:#e8b84b">Guilherme Lacerda · André Nascimento · Letícia de Jesus · Camila Santos · Cleberson Rodrigues · Amanda Damascena · Isabela Santos</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S2 ART 107 PANORAMA ===== -->
+<div class="slide" data-s="2">
+  <div class="blob" style="width:300px;height:300px;top:-60px;right:-50px;background:#e8b84b;opacity:.08;animation:fl1 10s ease-in-out infinite"></div>
+  <div class="blob" style="width:200px;height:200px;bottom:-50px;left:-40px;background:#4e9af1;opacity:.07;animation:fl2 13s ease-in-out infinite"></div>
+  <div style="position:relative;z-index:2;width:92%">
+    <p class="tag rv">Art. 107 do Código Penal</p>
+    <h2 class="rv" style="font-family:'Playfair Display',serif;font-size:1.7rem;color:#e8b84b;margin-bottom:4px">O que é Extinção da Punibilidade?</h2>
+    <p class="rv" style="font-size:.78rem;color:#94a3b8;margin-bottom:18px">Perda do direito punitivo do Estado em decorrência de causas legais supervenientes ao fato criminoso.</p>
+    <div class="rv" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:10px">
+      <div class="gc"><div style="font-size:1.5rem;margin-bottom:6px">💀</div><div style="font-size:.7rem;font-weight:700;color:#e8b84b;margin-bottom:3px">Morte do Agente</div><div style="font-size:.63rem;color:#7a9bbf">Art. 107, I CP</div></div>
+      <div class="gc"><div style="font-size:1.5rem;margin-bottom:6px">🏛️</div><div style="font-size:.7rem;font-weight:700;color:#4e9af1;margin-bottom:3px">Anistia/Graça/Indulto</div><div style="font-size:.63rem;color:#7a9bbf">Art. 107, II CP</div></div>
+      <div class="gc"><div style="font-size:1.5rem;margin-bottom:6px">📜</div><div style="font-size:.7rem;font-weight:700;color:#e8b84b;margin-bottom:3px">Retroatividade</div><div style="font-size:.63rem;color:#7a9bbf">Art. 107, III CP</div></div>
+      <div class="gc"><div style="font-size:1.5rem;margin-bottom:6px">⏱️</div><div style="font-size:.7rem;font-weight:700;color:#4e9af1;margin-bottom:3px">Prescrição</div><div style="font-size:.63rem;color:#7a9bbf">Art. 107, IV CP</div></div>
+    </div>
+    <div class="rv" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+      <div class="gc"><div style="font-size:1.5rem;margin-bottom:6px">🔔</div><div style="font-size:.7rem;font-weight:700;color:#a78bfa;margin-bottom:3px">Decadência</div><div style="font-size:.63rem;color:#7a9bbf">Art. 107, IV CP</div></div>
+      <div class="gc"><div style="font-size:1.5rem;margin-bottom:6px">🚫</div><div style="font-size:.7rem;font-weight:700;color:#e8b84b;margin-bottom:3px">Perempção</div><div style="font-size:.63rem;color:#7a9bbf">Art. 60 CPP</div></div>
+      <div class="gc"><div style="font-size:1.5rem;margin-bottom:6px">🤝</div><div style="font-size:.7rem;font-weight:700;color:#4e9af1;margin-bottom:3px">Renúncia/Perdão</div><div style="font-size:.63rem;color:#7a9bbf">Art. 107, V CP</div></div>
+      <div class="gc"><div style="font-size:1.5rem;margin-bottom:6px">🕊️</div><div style="font-size:.7rem;font-weight:700;color:#a78bfa;margin-bottom:3px">Perdão Judicial</div><div style="font-size:.63rem;color:#7a9bbf">Art. 107, IX CP</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S3 MORTE DO AGENTE ===== -->
+<div class="slide" data-s="3">
+  <div class="blob" style="width:300px;height:300px;top:-60px;right:-50px;background:#64748b;opacity:.12;animation:fl1 9s ease-in-out infinite"></div>
+  <div class="blob" style="width:200px;height:200px;bottom:-50px;left:-40px;background:#e8b84b;opacity:.07;animation:fl2 12s ease-in-out infinite"></div>
+  <!-- QR -->
+  <div class="qr-badge">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" fill="white"/>
+      <!-- QR G1 Rian Eunápolis -->
+      <rect x="5" y="5" width="35" height="35" rx="3" fill="none" stroke="#000" stroke-width="4"/>
+      <rect x="13" y="13" width="19" height="19" fill="#000" rx="1"/>
+      <rect x="60" y="5" width="35" height="35" rx="3" fill="none" stroke="#000" stroke-width="4"/>
+      <rect x="68" y="13" width="19" height="19" fill="#000" rx="1"/>
+      <rect x="5" y="60" width="35" height="35" rx="3" fill="none" stroke="#000" stroke-width="4"/>
+      <rect x="13" y="68" width="19" height="19" fill="#000" rx="1"/>
+      <rect x="60" y="60" width="8" height="8" fill="#000"/><rect x="72" y="60" width="8" height="8" fill="#000"/>
+      <rect x="84" y="60" width="8" height="8" fill="#000"/><rect x="60" y="72" width="8" height="8" fill="#000"/>
+      <rect x="84" y="72" width="8" height="8" fill="#000"/><rect x="60" y="84" width="8" height="8" fill="#000"/>
+      <rect x="72" y="84" width="8" height="8" fill="#000"/><rect x="84" y="84" width="8" height="8" fill="#000"/>
+      <rect x="46" y="5" width="8" height="8" fill="#000"/><rect x="46" y="17" width="8" height="8" fill="#000"/>
+      <rect x="46" y="29" width="8" height="8" fill="#000"/><rect x="46" y="46" width="8" height="8" fill="#000"/>
+      <rect x="5" y="46" width="8" height="8" fill="#000"/><rect x="17" y="46" width="8" height="8" fill="#000"/>
+      <rect x="29" y="46" width="8" height="8" fill="#000"/><rect x="58" y="46" width="8" height="8" fill="#000"/>
+      <rect x="70" y="46" width="8" height="8" fill="#000"/><rect x="82" y="46" width="8" height="8" fill="#000"/>
+    </svg>
+    <span>G1 — Caso Rian<br>Eunápolis/BA</span>
+  </div>
+  <div style="position:relative;z-index:2;width:92%">
+    <p class="tag rv">Art. 107, I CP</p>
+    <h2 class="rv" style="font-family:'Playfair Display',serif;font-size:1.7rem;color:#e8b84b;margin-bottom:14px">💀 Morte do Agente</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div>
+        <div class="gc rv" style="margin-bottom:12px">
+          <div style="font-size:.72rem;font-weight:700;color:#e8b84b;margin-bottom:6px">Fundamento</div>
+          <p style="font-size:.75rem;color:#cbd5e1;line-height:1.6">Princípio da <strong>intranscendência da pena</strong> (art. 5°, XLV, CF/88). A pena não pode passar da pessoa do condenado. Extingue pretensão punitiva <em>e</em> executória.</p>
+        </div>
+        <div class="gc rv">
+          <div style="font-size:.72rem;font-weight:700;color:#4e9af1;margin-bottom:6px">Prova exigida</div>
+          <p style="font-size:.75rem;color:#cbd5e1;line-height:1.6">Certidão de óbito <strong>original e autêntica</strong>. Certidão falsa não extingue — processo é retomado (STF, RHC 79.973).</p>
+        </div>
+      </div>
+      <div class="gc rv" style="border-left:3px solid #e8b84b">
+        <div style="font-size:.72rem;font-weight:700;color:#e8b84b;margin-bottom:8px">📋 Caso Concreto</div>
+        <p style="font-size:.75rem;color:#cbd5e1;line-height:1.7;margin-bottom:8px"><strong>Rian Bonfim de Jesus</strong>, 23 anos — Eunápolis/BA, março/2026.</p>
+        <p style="font-size:.75rem;color:#cbd5e1;line-height:1.7;margin-bottom:8px">Matou o Capitão da Reserva Jozival da Silva (68 anos) ao tentar separar briga de casal. Fugiu para mata urbana e <strong>morreu em confronto com a PM</strong>.</p>
+        <div style="background:rgba(232,184,75,.08);border-radius:6px;padding:7px 10px;font-size:.68rem;color:#e8b84b">⚖️ Consequência: Inquérito encerrado — art. 107, I CP. Efeito cível subsiste (art. 91, I CP).</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S4 ANISTIA GRAÇA INDULTO ===== -->
+<div class="slide" data-s="4">
+  <div class="blob" style="width:300px;height:300px;top:-60px;right:-50px;background:#4e9af1;opacity:.09;animation:fl1 10s ease-in-out infinite"></div>
+  <div class="blob" style="width:200px;height:200px;bottom:-50px;left:-40px;background:#e8b84b;opacity:.07;animation:fl2 13s ease-in-out infinite"></div>
+  <div style="position:relative;z-index:2;width:92%">
+    <p class="tag rv">Art. 107, II CP</p>
+    <h2 class="rv" style="font-family:'Playfair Display',serif;font-size:1.7rem;color:#4e9af1;margin-bottom:14px">🏛️ Anistia, Graça e Indulto</h2>
+    <div class="rv" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px">
+      <div class="gc" style="border-top:2px solid #e8b84b">
+        <div style="font-size:.75rem;font-weight:700;color:#e8b84b;margin-bottom:6px">Anistia</div>
+        <p style="font-size:.72rem;color:#cbd5e1;line-height:1.6;margin-bottom:6px">Alcança <strong>fatos</strong>. Lei do Congresso. Apaga todos os efeitos penais.</p>
+        <div style="font-size:.63rem;color:#7a9bbf">Ex.: Lei 6.683/1979 — anistia política</div>
+      </div>
+      <div class="gc" style="border-top:2px solid #4e9af1">
+        <div style="font-size:.75rem;font-weight:700;color:#4e9af1;margin-bottom:6px">Graça</div>
+        <p style="font-size:.72rem;color:#cbd5e1;line-height:1.6;margin-bottom:6px">Alcança <strong>pessoa</strong>. Decreto presidencial individual. Após sentença definitiva.</p>
+        <div style="font-size:.63rem;color:#7a9bbf">Ex.: Daniel Silveira, 2022</div>
+      </div>
+      <div class="gc" style="border-top:2px solid #a78bfa">
+        <div style="font-size:.75rem;font-weight:700;color:#a78bfa;margin-bottom:6px">Indulto</div>
+        <p style="font-size:.72rem;color:#cbd5e1;line-height:1.6;margin-bottom:6px">Alcança <strong>categoria</strong>. Decreto presidencial coletivo (anual).</p>
+        <div style="font-size:.63rem;color:#7a9bbf">Ex.: Decreto Natal Lula 2025</div>
+      </div>
+    </div>
+    <div class="gc rv" style="border-left:3px solid #4e9af1">
+      <div style="font-size:.72rem;font-weight:700;color:#4e9af1;margin-bottom:5px">📋 Caso Concreto — Daniel Silveira (Graça, 2022)</div>
+      <p style="font-size:.73rem;color:#cbd5e1;line-height:1.6">Deputado condenado pelo STF a 8 anos e 9 meses por atos antidemocráticos. O Presidente Bolsonaro concedeu <strong>graça individual</strong> por decreto antes do trânsito em julgado — caso único na história republicana brasileira. STF aceitou mas registrou ressalvas sobre os limites do poder de graça.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S5 RETROATIVIDADE ===== -->
+<div class="slide" data-s="5">
+  <div class="blob" style="width:300px;height:300px;top:-60px;left:-50px;background:#e8b84b;opacity:.08;animation:fl1 11s ease-in-out infinite"></div>
+  <div class="blob" style="width:200px;height:200px;bottom:-50px;right:-40px;background:#4e9af1;opacity:.07;animation:fl2 14s ease-in-out infinite"></div>
+  <div style="position:relative;z-index:2;width:92%">
+    <p class="tag rv">Art. 107, III CP</p>
+    <h2 class="rv" style="font-family:'Playfair Display',serif;font-size:1.7rem;color:#e8b84b;margin-bottom:14px">📜 Retroatividade de Lei Benéfica</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div>
+        <div class="gc rv" style="border-top:2px solid #e8b84b;margin-bottom:10px">
+          <div style="font-size:.72rem;font-weight:700;color:#e8b84b;margin-bottom:5px">📋 Caso 1 — Adultério (2005)</div>
+          <p style="font-size:.73rem;color:#cbd5e1;line-height:1.6">A <strong>Lei 11.106/2005</strong> revogou o crime de adultério (art. 240 CP), que existia há 65 anos no ordenamento. Todos os processos em curso foram extintos imediatamente por <em>abolitio criminis</em>. Efeito retroativo obrigatório — art. 5°, XL, CF.</p>
+        </div>
+        <div class="gc rv" style="border-top:2px solid #4e9af1">
+          <div style="font-size:.72rem;font-weight:700;color:#4e9af1;margin-bottom:5px">📋 Caso 2 — Pacote Anticrime (STF HC 180.421/SP)</div>
+          <p style="font-size:.73rem;color:#cbd5e1;line-height:1.6">A <strong>Lei 13.964/2019</strong> transformou estelionato em ação condicionada à representação. STF decidiu pela retroatividade: processos sem representação da vítima foram extintos por falta de condição de procedibilidade.</p>
+        </div>
+      </div>
+      <div class="gc rv" style="border-left:3px solid #e8b84b">
+        <div style="font-size:.72rem;font-weight:700;color:#e8b84b;margin-bottom:8px">Fundamento</div>
+        <p style="font-size:.75rem;color:#cbd5e1;line-height:1.7;margin-bottom:10px">Art. 5°, XL, CF/88 — <em>"a lei penal não retroagirá, salvo para beneficiar o réu."</em></p>
+        <div style="background:rgba(232,184,75,.08);border-radius:6px;padding:8px 10px;margin-bottom:8px">
+          <div style="font-size:.65rem;color:#e8b84b;font-weight:700">Abolitio Criminis</div>
+          <div style="font-size:.68rem;color:#94a3b8;margin-top:2px">Lei nova deixa de considerar o fato como crime. Apaga todos os efeitos penais, inclusive reincidência.</div>
+        </div>
+        <div style="background:rgba(78,154,241,.08);border-radius:6px;padding:8px 10px">
+          <div style="font-size:.65rem;color:#4e9af1;font-weight:700">Novatio Legis In Mellius</div>
+          <div style="font-size:.68rem;color:#94a3b8;margin-top:2px">Mantém o crime mas beneficia o agente. Retroage obrigatoriamente (Súm. 611 STF).</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S6 PRESCRIÇÃO ===== -->
+<div class="slide" data-s="6">
+  <div class="blob" style="width:300px;height:300px;top:-60px;right:-50px;background:#4e9af1;opacity:.09;animation:fl1 9s ease-in-out infinite"></div>
+  <div class="blob" style="width:200px;height:200px;bottom:-50px;left:-40px;background:#e8b84b;opacity:.07;animation:fl2 12s ease-in-out infinite"></div>
+  <!-- QR Lula/Triplex -->
+  <div class="qr-badge">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" fill="white"/>
+      <rect x="5" y="5" width="35" height="35" rx="3" fill="none" stroke="#000" stroke-width="4"/>
+      <rect x="13" y="13" width="19" height="19" fill="#000" rx="1"/>
+      <rect x="60" y="5" width="35" height="35" rx="3" fill="none" stroke="#000" stroke-width="4"/>
+      <rect x="68" y="13" width="19" height="19" fill="#000" rx="1"/>
+      <rect x="5" y="60" width="35" height="35" rx="3" fill="none" stroke="#000" stroke-width="4"/>
+      <rect x="13" y="68" width="19" height="19" fill="#000" rx="1"/>
+      <rect x="62" y="62" width="6" height="6" fill="#000"/><rect x="70" y="62" width="6" height="6" fill="#000"/>
+      <rect x="78" y="62" width="6" height="6" fill="#000"/><rect x="86" y="62" width="6" height="6" fill="#000"/>
+      <rect x="62" y="70" width="6" height="6" fill="#000"/><rect x="78" y="70" width="6" height="6" fill="#000"/>
+      <rect x="62" y="78" width="6" height="6" fill="#000"/><rect x="70" y="78" width="6" height="6" fill="#000"/>
+      <rect x="86" y="78" width="6" height="6" fill="#000"/><rect x="70" y="86" width="6" height="6" fill="#000"/>
+      <rect x="78" y="86" width="6" height="6" fill="#000"/>
+      <rect x="46" y="5" width="8" height="8" fill="#000"/><rect x="46" y="17" width="8" height="8" fill="#000"/>
+      <rect x="46" y="29" width="8" height="8" fill="#000"/><rect x="46" y="46" width="8" height="8" fill="#000"/>
+      <rect x="5" y="46" width="8" height="8" fill="#000"/><rect x="17" y="46" width="8" height="8" fill="#000"/>
+      <rect x="29" y="46" width="8" height="8" fill="#000"/>
+    </svg>
+    <span>G1 — Caso<br>Lula/Triplex</span>
+  </div>
+  <div style="position:relative;z-index:2;width:92%">
+    <p class="tag rv">Arts. 109-119 CP</p>
+    <h2 class="rv" style="font-family:'Playfair Display',serif;font-size:1.7rem;color:#4e9af1;margin-bottom:10px">⏱️ Prescrição — Caso Lula/Triplex</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div>
+        <div class="gc rv" style="border-left:3px solid #4e9af1;margin-bottom:10px">
+          <div style="font-size:.72rem;font-weight:700;color:#4e9af1;margin-bottom:5px">📋 O que aconteceu</div>
+          <p style="font-size:.73rem;color:#cbd5e1;line-height:1.65">Condenado pela Lava Jato em Curitiba, o STF anulou o processo em 2021 por incompetência de juízo. Com os processos reiniciando em Brasília, o MPF calculou os prazos: Lula tinha <strong>mais de 70 anos</strong> → prazo prescricional cai pela <strong>metade</strong> (art. 115 CP). Em janeiro/2022 a punibilidade foi declarada extinta.</p>
+        </div>
+        <div class="gc rv" style="background:rgba(78,154,241,.07);border:1px solid rgba(78,154,241,.2)">
+          <div style="font-size:.68rem;color:#4e9af1;font-weight:700">Art. 115 CP — Redução do prazo</div>
+          <p style="font-size:.7rem;color:#94a3b8;margin-top:4px;line-height:1.5">Agente maior de 70 anos na data da sentença → prazo prescricional reduzido à metade.</p>
+        </div>
+      </div>
+      <div class="rv">
+        <div style="font-size:.68rem;color:#7a9bbf;font-weight:700;margin-bottom:8px">Prazos — Art. 109 CP</div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:.63rem;color:#cbd5e1;width:100px">Acima de 12 anos</span><div class="bar-wrap"><div class="bar-fill" data-w="100" style="background:linear-gradient(to right,#e8b84b,#4e9af1)"></div></div><span style="font-size:.63rem;color:#e8b84b;width:36px;text-align:right">20 anos</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:.63rem;color:#cbd5e1;width:100px">8 a 12 anos</span><div class="bar-wrap"><div class="bar-fill" data-w="76" style="background:linear-gradient(to right,#e8b84b,#4e9af1)"></div></div><span style="font-size:.63rem;color:#e8b84b;width:36px;text-align:right">16 anos</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:.63rem;color:#cbd5e1;width:100px">4 a 8 anos</span><div class="bar-wrap"><div class="bar-fill" data-w="57" style="background:linear-gradient(to right,#e8b84b,#4e9af1)"></div></div><span style="font-size:.63rem;color:#e8b84b;width:36px;text-align:right">12 anos</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:.63rem;color:#cbd5e1;width:100px">2 a 4 anos</span><div class="bar-wrap"><div class="bar-fill" data-w="38" style="background:linear-gradient(to right,#e8b84b,#4e9af1)"></div></div><span style="font-size:.63rem;color:#e8b84b;width:36px;text-align:right">8 anos</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:.63rem;color:#cbd5e1;width:100px">1 a 2 anos</span><div class="bar-wrap"><div class="bar-fill" data-w="24" style="background:linear-gradient(to right,#e8b84b,#4e9af1)"></div></div><span style="font-size:.63rem;color:#e8b84b;width:36px;text-align:right">4 anos</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:.63rem;color:#cbd5e1;width:100px">Menos de 1 ano</span><div class="bar-wrap"><div class="bar-fill" data-w="14" style="background:linear-gradient(to right,#e8b84b,#4e9af1)"></div></div><span style="font-size:.63rem;color:#e8b84b;width:36px;text-align:right">3 anos</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S7 DECADÊNCIA ===== -->
+<div class="slide" data-s="7">
+  <div class="blob" style="width:300px;height:300px;top:-60px;right:-50px;background:#a78bfa;opacity:.09;animation:fl1 10s ease-in-out infinite"></div>
+  <div class="blob" style="width:200px;height:200px;bottom:-50px;left:-40px;background:#e8b84b;opacity:.07;animation:fl2 13s ease-in-out infinite"></div>
+  <!-- QR TJBA Eunápolis -->
+  <div class="qr-badge">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" fill="white"/>
+      <rect x="5" y="5" width="35" height="35" rx="3" fill="none" stroke="#000" stroke-width="4"/>
+      <rect x="13" y="13" width="19" height="19" fill="#000" rx="1"/>
+      <rect x="60" y="5" width="35" height="35" rx="3" fill="none" stroke="#000" stroke-width="4"/>
+      <rect x="68" y="13" width="19" height="19" fill="#000" rx="1"/>
+      <rect x="5" y="60" width="35" height="35" rx="3" fill="none" stroke="#000" stroke-width="4"/>
+      <rect x="13" y="68" width="19" height="19" fill="#000" rx="1"/>
+      <rect x="62" y="62" width="8" height="8" fill="#000"/><rect x="74" y="62" width="8" height="8" fill="#000"/>
+      <rect x="86" y="62" width="6" height="6" fill="#000"/><rect x="62" y="74" width="8" height="8" fill="#000"/>
+      <rect x="74" y="74" width="8" height="8" fill="#000"/><rect x="86" y="74" width="6" height="6" fill="#000"/>
+      <rect x="62" y="86" width="6" height="6" fill="#000"/><rect x="86" y="86" width="6" height="6" fill="#000"/>
+      <rect x="46" y="5" width="8" height="8" fill="#000"/><rect x="46" y="17" width="8" height="8" fill="#000"/>
+      <rect x="5" y="46" width="8" height="8" fill="#000"/><rect x="17" y="46" width="8" height="8" fill="#000"/>
+      <rect x="46" y="46" width="8" height="8" fill="#000"/><rect x="62" y="46" width="8" height="8" fill="#000"/>
+      <rect x="74" y="46" width="8" height="8" fill="#000"/>
+    </svg>
+    <span>TJBA — Proc.<br>8000060-65.2024</span>
+  </div>
+  <div style="position:relative;z-index:2;width:92%">
+    <p class="tag rv">Art. 103 CP</p>
+    <h2 class="rv" style="font-family:'Playfair Display',serif;font-size:1.7rem;color:#a78bfa;margin-bottom:14px">🔔 Decadência</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div>
+        <div class="gc rv" style="border-top:2px solid #a78bfa;margin-bottom:10px">
+          <div style="font-size:.72rem;font-weight:700;color:#a78bfa;margin-bottom:5px">Conceito</div>
+          <p style="font-size:.75rem;color:#cbd5e1;line-height:1.65">Perda do direito de <strong>oferecer queixa ou representação</strong> pelo decurso do prazo de <strong>6 meses</strong>. Atinge ação penal privada e pública condicionada.</p>
+        </div>
+        <div class="gc rv">
+          <div style="font-size:.72rem;font-weight:700;color:#e8b84b;margin-bottom:5px">Marco inicial</div>
+          <p style="font-size:.73rem;color:#cbd5e1;line-height:1.6">Dia em que o ofendido tomou <strong>conhecimento da autoria</strong> do crime (art. 103 CP). Prazo fatal — não se interrompe nem se suspende.</p>
+        </div>
+      </div>
+      <div class="gc rv" style="border-left:3px solid #a78bfa">
+        <div style="font-size:.72rem;font-weight:700;color:#a78bfa;margin-bottom:8px">📋 Caso Concreto — Eunápolis/BA</div>
+        <p style="font-size:.75rem;color:#cbd5e1;line-height:1.7;margin-bottom:8px"><strong>Proc. 8000060-65.2024.8.05.0134</strong> — 1ª Vara Criminal de Eunápolis.</p>
+        <p style="font-size:.75rem;color:#cbd5e1;line-height:1.7;margin-bottom:8px">Vítima de crime contra a honra tomou conhecimento da autoria e deixou transcorrer mais de <strong>6 meses</strong> sem oferecer queixa-crime.</p>
+        <div style="background:rgba(167,139,250,.08);border-radius:6px;padding:7px 10px;font-size:.68rem;color:#a78bfa">⚖️ TJBA (2025): Declarada extinta a punibilidade por decadência. Transitado em julgado.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S8 PEREMPÇÃO ===== -->
+<div class="slide" data-s="8">
+  <div class="blob" style="width:300px;height:300px;top:-60px;right:-50px;background:#e8b84b;opacity:.08;animation:fl1 9s ease-in-out infinite"></div>
+  <div class="blob" style="width:200px;height:200px;bottom:-50px;left:-40px;background:#a78bfa;opacity:.07;animation:fl2 12s ease-in-out infinite"></div>
+  <!-- QR STJ -->
+  <div class="qr-badge">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" fill="white"/>
+      <rect x="5" y="5" width="35" height="35" rx="3" fill="none" stroke="#000" stroke-width="4"/>
+      <rect x="13" y="13" width="19" height="19" fill="#000" rx="1"/>
+      <rect x="60" y="5" width="35" height="35" rx="3" fill="none" stroke="#000" stroke-width="4"/>
+      <rect x="68" y="13" width="19" height="19" fill="#000" rx="1"/>
+      <rect x="5" y="60" width="35" height="35" rx="3" fill="none" stroke="#000" stroke-width="4"/>
+      <rect x="13" y="68" width="19" height="19" fill="#000" rx="1"/>
+      <rect x="63" y="63" width="7" height="7" fill="#000"/><rect x="79" y="63" width="7" height="7" fill="#000"/>
+      <rect x="87" y="63" width="7" height="7" fill="#000"/><rect x="63" y="79" width="7" height="7" fill="#000"/>
+      <rect x="71" y="71" width="7" height="7" fill="#000"/><rect x="87" y="71" width="7" height="7" fill="#000"/>
+      <rect x="71" y="87" width="7" height="7" fill="#000"/><rect x="79" y="79" width="7" height="7" fill="#000"/>
+      <rect x="87" y="87" width="7" height="7" fill="#000"/>
+      <rect x="46" y="5" width="8" height="8" fill="#000"/><rect x="46" y="17" width="8" height="8" fill="#000"/>
+      <rect x="5" y="46" width="8" height="8" fill="#000"/><rect x="46" y="46" width="8" height="8" fill="#000"/>
+      <rect x="62" y="46" width="8" height="8" fill="#000"/><rect x="78" y="46" width="8" height="8" fill="#000"/>
+    </svg>
+    <span>STJ — REsp<br>45.743/RJ</span>
+  </div>
+  <div style="position:relative;z-index:2;width:92%">
+    <p class="tag rv">Art. 60 CPP</p>
+    <h2 class="rv" style="font-family:'Playfair Display',serif;font-size:1.7rem;color:#e8b84b;margin-bottom:14px">🚫 Perempção</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div>
+        <div class="gc rv" style="border-top:2px solid #e8b84b;margin-bottom:10px">
+          <div style="font-size:.72rem;font-weight:700;color:#e8b84b;margin-bottom:5px">Conceito</div>
+          <p style="font-size:.75rem;color:#cbd5e1;line-height:1.65">Sanção processual pela <strong>inércia do querelante</strong> após o início da ação penal privada. O Estado pune o abandono da causa pelo autor.</p>
+        </div>
+        <div class="gc rv">
+          <div style="font-size:.72rem;font-weight:700;color:#4e9af1;margin-bottom:5px">Hipóteses (art. 60 CPP)</div>
+          <ul style="font-size:.72rem;color:#cbd5e1;line-height:1.8;padding-left:14px">
+            <li>30 dias sem impulso processual</li>
+            <li>Morte/incapacidade sem substituto em 60 dias</li>
+            <li>Ausência injustificada à audiência</li>
+            <li>Perdão tácito após o início da ação</li>
+          </ul>
+        </div>
+      </div>
+      <div class="gc rv" style="border-left:3px solid #e8b84b">
+        <div style="font-size:.72rem;font-weight:700;color:#e8b84b;margin-bottom:8px">📋 Caso Concreto — STJ REsp 45.743/RJ</div>
+        <p style="font-size:.75rem;color:#cbd5e1;line-height:1.7;margin-bottom:8px">Querelante ajuizou queixa-crime por <strong>difamação</strong>. Intimado para audiência de instrução, <strong>não compareceu sem justificativa</strong>.</p>
+        <p style="font-size:.75rem;color:#cbd5e1;line-height:1.7;margin-bottom:8px">STJ declarou extinta a punibilidade por perempção, reafirmando que a ausência do querelante à audiência sem motivo é causa automática de extinção.</p>
+        <div style="background:rgba(232,184,75,.08);border-radius:6px;padding:7px 10px;font-size:.68rem;color:#e8b84b">⚖️ Transitado em julgado. Citado em toda a doutrina processual penal.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S9 RENÚNCIA E PERDÃO ACEITO ===== -->
+<div class="slide" data-s="9">
+  <div class="blob" style="width:300px;height:300px;top:-60px;right:-50px;background:#4e9af1;opacity:.09;animation:fl1 10s ease-in-out infinite"></div>
+  <div class="blob" style="width:200px;height:200px;bottom:-50px;left:-40px;background:#e8b84b;opacity:.07;animation:fl2 13s ease-in-out infinite"></div>
+  <!-- QR TJBA -->
+  <div class="qr-badge">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" fill="white"/>
+      <rect x="5" y="5" width="35" height="35" rx="3" fill="none" stroke="#000" stroke-width="4"/>
+      <rect x="13" y="13" width="19" height="19" fill="#000" rx="1"/>
+      <rect x="60" y="5" width="35" height="35" rx="3" fill="none" stroke="#000" stroke-width="4"/>
+      <rect x="68" y="13" width="19" height="19" fill="#000" rx="1"/>
+      <rect x="5" y="60" width="35" height="35" rx="3" fill="none" stroke="#000" stroke-width="4"/>
+      <rect x="13" y="68" width="19" height="19" fill="#000" rx="1"/>
+      <rect x="60" y="60" width="10" height="10" fill="#000"/><rect x="74" y="60" width="10" height="10" fill="#000"/>
+      <rect x="88" y="60" width="7" height="7" fill="#000"/><rect x="60" y="74" width="10" height="10" fill="#000"/>
+      <rect x="88" y="74" width="7" height="7" fill="#000"/><rect x="67" y="67" width="7" height="7" fill="#000"/>
+      <rect x="60" y="88" width="7" height="7" fill="#000"/><rect x="74" y="88" width="7" height="7" fill="#000"/>
+      <rect x="46" y="5" width="8" height="8" fill="#000"/><rect x="46" y="29" width="8" height="8" fill="#000"/>
+      <rect x="5" y="46" width="8" height="8" fill="#000"/><rect x="29" y="46" width="8" height="8" fill="#000"/>
+      <rect x="46" y="46" width="8" height="8" fill="#000"/>
+    </svg>
+    <span>TJBA — HC<br>Jul/2024</span>
+  </div>
+  <div style="position:relative;z-index:2;width:92%">
+    <p class="tag rv">Art. 107, V CP</p>
+    <h2 class="rv" style="font-family:'Playfair Display',serif;font-size:1.7rem;color:#4e9af1;margin-bottom:14px">🤝 Renúncia e Perdão Aceito</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="gc rv" style="border-top:2px solid #e8b84b">
+        <div style="font-size:.72rem;font-weight:700;color:#e8b84b;margin-bottom:6px">Renúncia (art. 104 CP)</div>
+        <p style="font-size:.73rem;color:#cbd5e1;line-height:1.6;margin-bottom:6px">Ato <strong>unilateral</strong> do ofendido <em>antes</em> de ajuizar a ação. Expressa ou tácita (recebimento de indenização). Abrange coautores (indivisibilidade).</p>
+        <div style="background:rgba(232,184,75,.08);border-radius:6px;padding:7px 10px;font-size:.68rem;color:#e8b84b">Não precisa de aceitação do réu.</div>
+      </div>
+      <div class="gc rv" style="border-top:2px solid #4e9af1">
+        <div style="font-size:.72rem;font-weight:700;color:#4e9af1;margin-bottom:6px">Perdão Aceito (art. 105 CP)</div>
+        <p style="font-size:.73rem;color:#cbd5e1;line-height:1.6;margin-bottom:6px">Ato <strong>bilateral</strong> do ofendido <em>durante</em> o processo. Requer a <strong>aceitação</strong> do querelado. Válido até o trânsito em julgado.</p>
+        <div style="background:rgba(78,154,241,.08);border-radius:6px;padding:7px 10px;font-size:.68rem;color:#4e9af1">Réu pode recusar (art. 51 CPP).</div>
+      </div>
+    </div>
+    <div class="gc rv" style="border-left:3px solid #4e9af1;margin-top:12px">
+      <div style="font-size:.72rem;font-weight:700;color:#4e9af1;margin-bottom:5px">📋 Caso Concreto — TJBA HC jul/2024</div>
+      <p style="font-size:.73rem;color:#cbd5e1;line-height:1.6">Querelante processou apenas <strong>um</strong> dos dois coautores de declarações ofensivas (crime contra a honra). TJBA declarou <strong>renúncia tácita</strong> em relação a todos — violação ao princípio da <strong>indivisibilidade</strong> da ação penal privada (art. 48 CPP). Punibilidade extinta. Transitado em julgado.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S10 PERDÃO JUDICIAL ===== -->
+<div class="slide" data-s="10">
+  <div class="blob" style="width:300px;height:300px;top:-60px;left:-50px;background:#4e9af1;opacity:.09;animation:fl1 10s ease-in-out infinite"></div>
+  <div class="blob" style="width:200px;height:200px;bottom:-50px;right:-40px;background:#e8b84b;opacity:.07;animation:fl2 13s ease-in-out infinite"></div>
+  <!-- QR TJAM -->
+  <div class="qr-badge">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" fill="white"/>
+      <rect x="5" y="5" width="35" height="35" rx="3" fill="none" stroke="#000" stroke-width="4"/>
+      <rect x="13" y="13" width="19" height="19" fill="#000" rx="1"/>
+      <rect x="60" y="5" width="35" height="35" rx="3" fill="none" stroke="#000" stroke-width="4"/>
+      <rect x="68" y="13" width="19" height="19" fill="#000" rx="1"/>
+      <rect x="5" y="60" width="35" height="35" rx="3" fill="none" stroke="#000" stroke-width="4"/>
+      <rect x="13" y="68" width="19" height="19" fill="#000" rx="1"/>
+      <rect x="62" y="62" width="9" height="9" fill="#000"/><rect x="75" y="62" width="9" height="9" fill="#000"/>
+      <rect x="88" y="62" width="6" height="6" fill="#000"/><rect x="62" y="75" width="9" height="9" fill="#000"/>
+      <rect x="75" y="75" width="9" height="9" fill="#000"/><rect x="88" y="75" width="6" height="6" fill="#000"/>
+      <rect x="62" y="88" width="6" height="6" fill="#000"/><rect x="88" y="88" width="6" height="6" fill="#000"/>
+      <rect x="46" y="13" width="8" height="8" fill="#000"/><rect x="46" y="25" width="8" height="8" fill="#000"/>
+      <rect x="5" y="46" width="8" height="8" fill="#000"/><rect x="17" y="46" width="8" height="8" fill="#000"/>
+      <rect x="46" y="46" width="8" height="8" fill="#000"/><rect x="70" y="46" width="8" height="8" fill="#000"/>
+    </svg>
+    <span>TJAM — Perdão<br>Judicial 2020</span>
+  </div>
+  <div style="position:relative;z-index:2;width:92%">
+    <p class="tag rv">Art. 107, IX CP</p>
+    <h2 class="rv" style="font-family:'Playfair Display',serif;font-size:1.7rem;color:#4e9af1;margin-bottom:14px">🕊️ Perdão Judicial</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div>
+        <div class="gc rv" style="border-top:2px solid #4e9af1;margin-bottom:10px">
+          <div style="font-size:.72rem;font-weight:700;color:#4e9af1;margin-bottom:5px">Conceito</div>
+          <p style="font-size:.75rem;color:#cbd5e1;line-height:1.65">O <strong>juiz</strong> renuncia ao direito de punir quando as consequências do crime afetam <strong>tão gravemente</strong> o próprio agente que a pena seria desnecessária.</p>
+        </div>
+        <div class="gc rv">
+          <div style="font-size:.72rem;font-weight:700;color:#e8b84b;margin-bottom:5px">Principais hipóteses</div>
+          <ul style="font-size:.72rem;color:#cbd5e1;line-height:1.8;padding-left:14px">
+            <li>Homicídio culposo: agente mata familiar (art. 121, §5°)</li>
+            <li>Lesão corporal culposa: mesmo motivo (art. 129, §8°)</li>
+            <li>Crimes contra a honra: retratação (art. 143 CP)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="gc rv" style="border-left:3px solid #4e9af1">
+        <div style="font-size:.72rem;font-weight:700;color:#4e9af1;margin-bottom:8px">📋 Caso Concreto — TJAM, 2020</div>
+        <p style="font-size:.75rem;color:#cbd5e1;line-height:1.7;margin-bottom:8px">Pai deu marcha à ré com o carro e acidentalmente <strong>atropelou e matou a filha de 2 anos</strong> que estava atrás do veículo. Denunciado por homicídio culposo.</p>
+        <p style="font-size:.75rem;color:#cbd5e1;line-height:1.7;margin-bottom:8px">Juiz Yuri Caminha Jorge concedeu <strong>perdão judicial</strong> — as consequências do crime atingiram o agente de forma tão grave que a pena seria desproporcional.</p>
+        <div style="background:rgba(78,154,241,.08);border-radius:6px;padding:7px 10px;font-size:.68rem;color:#4e9af1">⚖️ Súmula 18 STJ: Sentença declaratória — não gera reincidência nem maus antecedentes.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S11 QUADRO COMPARATIVO ===== -->
+<div class="slide" data-s="11">
+  <div class="blob" style="width:300px;height:300px;top:-60px;right:-50px;background:#e8b84b;opacity:.08;animation:fl1 9s ease-in-out infinite"></div>
+  <div style="position:relative;z-index:2;width:92%">
+    <p class="tag rv">Síntese</p>
+    <h2 class="rv" style="font-family:'Playfair Display',serif;font-size:1.6rem;color:#e8b84b;margin-bottom:14px">📊 Quadro Comparativo</h2>
+    <div class="rv">
+      <table>
+        <thead><tr><th>Causa</th><th>Momento</th><th>Quem declara</th><th>Ação Penal</th><th>Base Legal</th></tr></thead>
+        <tbody>
+          <tr><td>💀 Morte do Agente</td><td style="text-align:center">Qualquer</td><td style="text-align:center">Juiz</td><td style="text-align:center">Qualquer</td><td style="color:#7a9bbf">Art. 107, I CP</td></tr>
+          <tr><td>🏛️ Anistia/Graça/Indulto</td><td style="text-align:center">Qualquer</td><td style="text-align:center">Congresso/Presidente</td><td style="text-align:center">Qualquer</td><td style="color:#7a9bbf">Art. 107, II CP</td></tr>
+          <tr><td>📜 Retroatividade</td><td style="text-align:center">Qualquer</td><td style="text-align:center">Juiz (ex officio)</td><td style="text-align:center">Qualquer</td><td style="color:#7a9bbf">Art. 107, III CP</td></tr>
+          <tr><td>⏱️ Prescrição</td><td style="text-align:center">Qualquer</td><td style="text-align:center">Juiz (ex officio)</td><td style="text-align:center">Qualquer</td><td style="color:#7a9bbf">Arts. 109-119 CP</td></tr>
+          <tr><td>🔔 Decadência</td><td style="text-align:center">Pré-ação</td><td style="text-align:center">Juiz (ex officio)</td><td style="text-align:center">Privada/Condic.</td><td style="color:#7a9bbf">Art. 103 CP</td></tr>
+          <tr><td>🚫 Perempção</td><td style="text-align:center">Durante ação</td><td style="text-align:center">Juiz (ex officio)</td><td style="text-align:center">Privada</td><td style="color:#7a9bbf">Art. 60 CPP</td></tr>
+          <tr><td>🤝 Renúncia/Perdão aceito</td><td style="text-align:center">Pré/durante</td><td style="text-align:center">Ofendido</td><td style="text-align:center">Privada</td><td style="color:#7a9bbf">Art. 104-105 CP</td></tr>
+          <tr><td>🕊️ Perdão Judicial</td><td style="text-align:center">Sentença</td><td style="text-align:center">Juiz</td><td style="text-align:center">Qualquer</td><td style="color:#7a9bbf">Art. 107, IX CP</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S15 WOOCLAP ===== -->
+<div class="slide" data-s="12">
+  <div class="blob" style="width:350px;height:350px;top:-80px;right:-60px;background:#e8b84b;opacity:.12;animation:fl1 9s ease-in-out infinite"></div>
+  <div class="blob" style="width:250px;height:250px;bottom:-60px;left:-50px;background:#4e9af1;opacity:.09;animation:fl2 12s ease-in-out infinite"></div>
+  <canvas id="pc12" style="position:absolute;inset:0;z-index:1"></canvas>
+  <div style="position:relative;z-index:2;text-align:center">
+    <p class="tag rv" style="margin-bottom:6px">Participe ao Vivo</p>
+    <h2 class="rv" style="font-family:'Playfair Display',serif;font-size:1.9rem;color:#e8b84b;margin-bottom:20px">📱 Responda agora pelo celular</h2>
+    <div class="woo-card rv" style="margin:0 auto">
+      <div class="woo-qr">
+        <img src="data:image/png;base64,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" style="width:100%;height:100%;border-radius:8px" alt="QR Code Votação">
+      </div>
+      <div>
+        <p style="font-size:.9rem;color:#cbd5e1;margin-bottom:4px">Acesse o link ou escaneie o QR</p>
+        <p style="font-size:1rem;font-weight:700;color:#e8b84b;letter-spacing:2px">lansolutions.github.io/<span style="color:#4e9af1">grupo7-penal</span></p>
+      </div>
+      <div style="display:flex;gap:20px;font-size:.72rem;color:#7a9bbf">
+        <span>☁️ Nuvem de palavras</span>
+        <span>⚖️ Enquetes</span>
+        <span>🌡️ Termômetro</span>
+      </div>
+      <p style="font-size:.63rem;color:#475569;font-style:italic">Acesse também: /admin.html para controlar as perguntas</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S16 ENCERRAMENTO ===== -->
+<div class="slide" data-s="13">
+  <div class="blob" style="width:380px;height:380px;top:-100px;right:-80px;background:#e8b84b;opacity:.13;animation:fl1 9s ease-in-out infinite"></div>
+  <div class="blob" style="width:260px;height:260px;bottom:-70px;left:-60px;background:#4e9af1;opacity:.10;animation:fl2 12s ease-in-out infinite"></div>
+  <canvas id="pc13" style="position:absolute;inset:0;z-index:1"></canvas>
+  <div style="position:relative;z-index:2;text-align:center;padding:0 40px">
+    <div style="font-size:56px;margin-bottom:8px;animation:float 3s ease-in-out infinite" class="rv">⚖️</div>
+    <h2 class="rv" style="font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;background:linear-gradient(135deg,#e8b84b,#4e9af1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;animation:glow 3s ease-in-out infinite">Obrigado!</h2>
+    <p class="rv" style="font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:#7a9bbf;margin-bottom:22px">Grupo 7 · Direito Penal · Extinção da Punibilidade</p>
+    <div class="rv" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:82%;margin:0 auto 20px">
+      <div class="gc"><p style="font-size:.6rem;color:#7a9bbf;margin-bottom:3px">Base Legal</p><p style="font-size:.78rem;font-weight:700;color:#e8b84b">Art. 107 CP</p></div>
+      <div class="gc"><p style="font-size:.6rem;color:#7a9bbf;margin-bottom:3px">Jurisprudência</p><p style="font-size:.78rem;font-weight:700;color:#4e9af1">STF + STJ</p></div>
+      <div class="gc"><p style="font-size:.6rem;color:#7a9bbf;margin-bottom:3px">Casos Concretos</p><p style="font-size:.78rem;font-weight:700;color:#e8b84b">8 hipóteses</p></div>
+      <div class="gc"><p style="font-size:.6rem;color:#7a9bbf;margin-bottom:3px">Caso Local</p><p style="font-size:.78rem;font-weight:700;color:#a78bfa">Eunápolis/BA</p></div>
+    </div>
+    <!-- PAINEL RESULTADO WOOCLAP AO VIVO -->
+    <div class="rv" style="max-width:82%;width:82%;margin:0 auto;border-radius:12px;overflow:hidden;border:2px solid rgba(232,184,75,.3);box-shadow:0 0 30px rgba(232,184,75,.08)">
+      <div style="background:rgba(232,184,75,.08);padding:5px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(232,184,75,.15)">
+        <span style="font-size:.75rem">📊</span>
+        <span style="font-size:.65rem;font-weight:600;color:#e8b84b;letter-spacing:2px;text-transform:uppercase">📊 Resultado ao vivo</span>
+      </div>
+      <iframe id="results-frame" src="https://lansolutions.github.io/grupo7-penal/results.html" 
+        width="100%" height="300" frameborder="0"
+        style="display:block;background:#0a1628;border-radius:0 0 10px 10px">
+      </iframe>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nbtn" onclick="go(-1)">&#8249;</button>
+  <div class="dots" id="dots"></div>
+  <button class="nbtn" onclick="go(1)">&#8250;</button>
+  <span class="nctr" id="ctr">1/16</span>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const total=slides.length;
+let cur=0;
+const dotsEl=document.getElementById('dots');
+const ctrEl=document.getElementById('ctr');
+for(let i=0;i<total;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.onclick=()=>goTo(i);dotsEl.appendChild(d);}
+
+function goTo(n){
+  slides[cur].classList.remove('active');
+  dotsEl.children[cur].classList.remove('active');
+  cur=n;
+  slides[cur].classList.add('active');
+  dotsEl.children[cur].classList.add('active');
+  ctrEl.textContent=(cur+1)+'/'+total;
+  animSlide(slides[cur]);
+}
+function go(d){let n=cur+d;if(n<0)n=total-1;if(n>=total)n=0;goTo(n);}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft'){e.preventDefault();go(-1);}});
+let tx=0;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{const d=tx-e.changedTouches[0].clientX;if(Math.abs(d)>40)go(d>0?1:-1);});
+
+function animSlide(sl){
+  sl.querySelectorAll('.rv').forEach((el,i)=>{
+    el.style.transition='none';el.style.opacity='0';el.style.transform='translateY(16px)';el.offsetHeight;
+    const t=i*.07;el.style.transition=`opacity .3s ease ${t}s,transform .3s ease ${t}s`;
+    el.style.opacity='1';el.style.transform='none';
+  });
+  sl.querySelectorAll('.bar-fill:not(.fi)').forEach((b,i)=>{
+    b.classList.add('fi');b.style.width='0';b.style.transition=`width .6s ease ${i*.1}s`;b.offsetHeight;b.style.width=b.dataset.w+'%';
+  });
+}
+
+// Particles
+function initP(id,count){
+  const c=document.getElementById(id);if(!c)return;
+  const ctx=c.getContext('2d');c.width=c.offsetWidth||window.innerWidth;c.height=c.offsetHeight||window.innerHeight;
+  const ps=Array.from({length:count},()=>({x:Math.random()*800,y:Math.random()*600,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:Math.random()*1.8+.5,a:Math.random()*.25+.06}));
+  (function loop(){ctx.clearRect(0,0,800,600);ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=800;if(p.x>800)p.x=0;if(p.y<0)p.y=600;if(p.y>600)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(232,184,75,${p.a})`;ctx.fill();});requestAnimationFrame(loop);})();
+}
+initP('pc1',40);initP('pc12',35);initP('pc13',40);
+
+// Mouse spotlight
+document.addEventListener('mousemove',e=>{document.querySelectorAll('.slide.active').forEach(s=>{s.style.background=`radial-gradient(600px circle at ${e.clientX}px ${e.clientY}px,rgba(232,184,75,.04),transparent 50%),#0a1628`;});});
+
+// VF
+const vfAnswers={1:false,2:false};
+const vfFeedback={1:{ok:'✅ Correto! A extinção da punibilidade é penal — o efeito cível (obrigação de indenizar) subsiste. Art. 91, I CP.',err:'❌ Falso. A morte extingue apenas a punibilidade penal. A obrigação civil de indenizar a vítima subsiste (art. 91, I CP).'},2:{ok:'✅ Correto! A sentença de perdão judicial é meramente declaratória da extinção. Não gera reincidência nem maus antecedentes. (Súmula 18 STJ)',err:'❌ Falso. A sentença que concede perdão judicial é declaratória da extinção da punibilidade — não gera reincidência. (Súmula 18 STJ)'}};
+let vfDone={};
+function checkVF(q,userSaysFalse,btn){
+  if(vfDone[q])return;vfDone[q]=true;
+  const correct=vfAnswers[q];
+  const userCorrect=(userSaysFalse===!correct);
+  document.querySelectorAll(`#vf${q}-opts button`).forEach(b=>b.onclick=null);
+  btn.classList.add(userCorrect?'vf-correct':'vf-wrong');
+  const fb=document.getElementById(`vf${q}-fb`);
+  fb.textContent=userCorrect?vfFeedback[q].ok:vfFeedback[q].err;
+  fb.className='qfb show '+(userCorrect?'ok':'err');
+}
+
+// Dec
+const decFB={
+  1:{C:'✅ Correto! O TJAM concedeu perdão judicial — as consequências atingiram tão gravemente o pai que a pena seria desnecessária (art. 121, §5° CP + Súm. 18 STJ).',def:'❌ A resposta é C: Perdão Judicial. O juiz renuncia à pena quando o próprio agente já foi suficientemente atingido pelas consequências do crime.'},
+  2:{B:'✅ Correto! A extinção da punibilidade penal não extingue o efeito cível. O espólio/herdeiros do réu respondem pela indenização (art. 91, I CP).',def:'❌ A resposta é B. A morte de Rian extingue a punibilidade penal, mas a obrigação civil de indenizar a família do Capitão Jozival subsiste.'},
+  3:{B:'✅ Correto! A lei penal benéfica retroage obrigatoriamente (art. 5°, XL, CF). O adultério foi abolido — todos os condenados devem ser imediatamente soltos.',def:'❌ A resposta é B. A abolitio criminis retroage obrigatoriamente para extinguir todas as condenações, mesmo que já transitadas em julgado.'}
+};
+let decDone={};
+function checkDec(q,opt){
+  if(decDone[q])return;decDone[q]=true;
+  const correct=Object.keys(decFB[q])[0];
+  document.querySelectorAll(`#dec${q} .qopt`).forEach(b=>{b.onclick=null;});
+  event.target.classList.add(opt===correct?'correct':'wrong');
+  if(opt===correct){document.querySelectorAll(`#dec${q} .qopt`).forEach(b=>{if(b.textContent.startsWith(correct))b.classList.add('correct');});}
+  else{document.querySelectorAll(`#dec${q} .qopt`).forEach(b=>{if(b.textContent.startsWith(correct))b.classList.add('correct');});}
+  const fb=document.getElementById(`dec${q}-fb`);
+  fb.textContent=decFB[q][opt]||decFB[q].def;
+  fb.className='qfb show '+(opt===correct?'ok':'err');
+  const nb=document.getElementById(`dec-next${q}`);if(nb)nb.style.display='inline-block';
+}
+function showDec(n){
+  document.getElementById('dec'+(n-1)).style.display='none';
+  document.getElementById('dec'+n).style.display='block';
+}
+
+// Termômetro
+const thermoLabels=['','Discordo totalmente','Discordo','Neutro','Concordo','Concordo totalmente'];
+function updateThermo(id){
+  const v=document.getElementById(id).value;
+  document.getElementById(id+'-val').textContent=thermoLabels[v];
+}
+
+// Init first slide
+animSlide(slides[0]);
+</script>
+</body>
+</html>
