@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Extinção da Punibilidade — Vote</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:#0a1628;font-family:'Segoe UI',sans-serif;color:#f1f5f9}
+.wrap{max-width:480px;margin:0 auto;padding:20px 16px;min-height:100vh;display:flex;flex-direction:column}
+.logo{text-align:center;padding:16px 0 24px}
+.logo h1{font-size:1.1rem;font-weight:700;color:#e8b84b;letter-spacing:2px;text-transform:uppercase}
+.logo p{font-size:.72rem;color:#475569;margin-top:4px}
+.card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:20px;margin-bottom:16px}
+.badge{font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:#7a9bbf;margin-bottom:8px}
+.pergunta{font-size:1rem;font-weight:600;color:#f1f5f9;line-height:1.5;margin-bottom:18px}
+
+/* word cloud input */
+.wc-input{width:100%;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);border-radius:10px;padding:12px 14px;font-size:1rem;color:#f1f5f9;outline:none}
+.wc-input:focus{border-color:#e8b84b}
+
+/* enquete */
+.opt{width:100%;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:13px 16px;font-size:.9rem;color:#f1f5f9;cursor:pointer;margin-bottom:10px;text-align:left;transition:all .2s}
+.opt:hover,.opt.sel{border-color:#e8b84b;background:rgba(232,184,75,.1);color:#e8b84b}
+
+/* escala */
+.scale-wrap{display:flex;flex-direction:column;gap:10px}
+.scale-labels{display:flex;justify-content:space-between;font-size:.65rem;color:#7a9bbf}
+input[type=range]{width:100%;accent-color:#e8b84b;cursor:pointer;height:6px}
+.scale-val{text-align:center;font-size:.85rem;font-weight:700;color:#e8b84b;margin-top:4px}
+
+/* botão */
+.btn{width:100%;padding:14px;border:none;border-radius:10px;background:linear-gradient(135deg,#e8b84b,#d4a832);color:#0a1628;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:4px;transition:opacity .2s}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn:hover:not(:disabled){opacity:.85}
+
+/* estados */
+.aguarda{text-align:center;padding:40px 20px;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.aguarda .icon{font-size:3rem;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.aguarda h2{font-size:1rem;color:#e8b84b;font-weight:600}
+.aguarda p{font-size:.8rem;color:#475569}
+.enviado{text-align:center;padding:20px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:14px;color:#86efac}
+.enviado .icon{font-size:2.5rem;margin-bottom:8px}
+.enviado h2{font-size:1rem;font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">
+    <h1>⚖️ Extinção da Punibilidade</h1>
+    <p>Grupo 7 · Direito Penal · 3º Semestre 2026/1</p>
+  </div>
+  <div id="app"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue, push, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  // SUBSTITUA PELOS SEUS DADOS DO FIREBASE
+  apiKey: "SUA_API_KEY",
+  authDomain: "SEU_PROJETO.firebaseapp.com",
+  databaseURL: "https://SEU_PROJETO-default-rtdb.firebaseio.com",
+  projectId: "SEU_PROJETO",
+  storageBucket: "SEU_PROJETO.appspot.com",
+  messagingSenderId: "SEU_ID",
+  appId: "SEU_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const appEl = document.getElementById("app");
+let perguntaAtiva = null;
+let jaVotou = {};
+
+// Escuta pergunta ativa
+onValue(ref(db, "ativa"), (snap) => {
+  const id = snap.val();
+  if (!id) { mostrarAguarda(); return; }
+  onValue(ref(db, "perguntas/" + id), (s) => {
+    const p = s.val();
+    if (!p) return;
+    perguntaAtiva = { id, ...p };
+    if (jaVotou[id]) { mostrarEnviado(); return; }
+    renderPergunta(perguntaAtiva);
+  }, { onlyOnce: true });
+});
+
+function mostrarAguarda() {
+  appEl.innerHTML = `<div class="aguarda">
+    <div class="icon">⏳</div>
+    <h2>Aguardando próxima pergunta...</h2>
+    <p>O professor vai liberar em breve.</p>
+  </div>`;
+}
+
+function mostrarEnviado() {
+  appEl.innerHTML = `<div class="enviado">
+    <div class="icon">✅</div>
+    <h2>Resposta enviada!</h2>
+    <p style="font-size:.8rem;color:#86efac;margin-top:6px">Aguarde a próxima pergunta.</p>
+  </div>`;
+}
+
+function renderPergunta(p) {
+  let html = `<div class="card">
+    <div class="badge">${tipoLabel(p.tipo)}</div>
+    <div class="pergunta">${p.texto}</div>`;
+
+  if (p.tipo === "wordcloud") {
+    html += `<input class="wc-input" id="resp" type="text" placeholder="Digite uma palavra..." maxlength="30">`;
+  } else if (p.tipo === "enquete") {
+    const opts = p.opcoes || [];
+    html += opts.map((o, i) => `<button class="opt" onclick="selecionarOpt(this,${i})">${o}</button>`).join("");
+    html += `<input type="hidden" id="resp" value="">`;
+  } else if (p.tipo === "escala") {
+    html += `<div class="scale-wrap">
+      <div class="scale-labels"><span>${p.min_label || "Discordo totalmente"}</span><span>${p.max_label || "Concordo totalmente"}</span></div>
+      <input type="range" id="resp" min="1" max="5" value="3" oninput="document.getElementById('escala-val').textContent=this.value">
+      <div class="scale-val" id="escala-val">3</div>
+    </div>`;
+  }
+
+  html += `<button class="btn" id="btnEnviar" onclick="enviar()">Enviar resposta</button></div>`;
+  appEl.innerHTML = html;
+}
+
+window.selecionarOpt = function(el, idx) {
+  document.querySelectorAll(".opt").forEach(o => o.classList.remove("sel"));
+  el.classList.add("sel");
+  document.getElementById("resp").value = idx;
+};
+
+window.enviar = async function() {
+  const btn = document.getElementById("btnEnviar");
+  const respEl = document.getElementById("resp");
+  const val = respEl.value || respEl.value === 0 ? respEl.value : "";
+  if (val === "" || val === null) return;
+  btn.disabled = true;
+  btn.textContent = "Enviando...";
+  await push(ref(db, "respostas/" + perguntaAtiva.id), {
+    valor: val,
+    ts: Date.now()
+  });
+  jaVotou[perguntaAtiva.id] = true;
+  mostrarEnviado();
+};
+
+function tipoLabel(tipo) {
+  return { wordcloud: "☁️ Nuvem de Palavras", enquete: "⚖️ Enquete", escala: "🌡️ Termômetro de Opinião" }[tipo] || tipo;
+}
+</script>
+</body>
+</html>
