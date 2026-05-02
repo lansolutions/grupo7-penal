@@ -498,28 +498,112 @@ tr:nth-child(even) td{background:rgba(255,255,255,.02)}
 <!-- ===== S11 QUADRO COMPARATIVO ===== -->
 <div class="slide" data-s="11">
   <div class="blob" style="width:300px;height:300px;top:-60px;right:-50px;background:#e8b84b;opacity:.08;animation:fl1 9s ease-in-out infinite"></div>
-  <div style="position:relative;z-index:2;width:92%">
-    <p class="tag rv">Síntese</p>
-    <h2 class="rv" style="font-family:'Playfair Display',serif;font-size:1.6rem;color:#e8b84b;margin-bottom:14px">📊 Quadro Comparativo</h2>
-    <div class="rv">
-      <table>
-        <thead><tr><th>Causa</th><th>Momento</th><th>Quem declara</th><th>Ação Penal</th><th>Base Legal</th></tr></thead>
+  <div class="blob" style="width:220px;height:220px;bottom:-50px;left:-40px;background:#4e9af1;opacity:.07;animation:fl2 11s ease-in-out infinite"></div>
+  <canvas id="pc11" style="position:absolute;inset:0;z-index:1"></canvas>
+  <div style="position:relative;z-index:2;width:96%;max-height:96%;overflow:hidden;display:flex;flex-direction:column;gap:6px">
+    <p class="tag rv" style="flex-shrink:0">Síntese</p>
+    <h2 class="rv" style="font-family:'Playfair Display',serif;font-size:1.35rem;color:#e8b84b;margin-bottom:4px;flex-shrink:0">📊 Quadro Comparativo</h2>
+    <div class="rv" style="flex:1;min-height:0;overflow:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:.62rem">
+        <thead>
+          <tr>
+            <th style="padding:6px 8px;text-align:left;background:rgba(232,184,75,.15);color:#e8b84b;border-bottom:2px solid rgba(232,184,75,.3);white-space:nowrap">Causa</th>
+            <th style="padding:6px 8px;text-align:center;background:rgba(232,184,75,.15);color:#e8b84b;border-bottom:2px solid rgba(232,184,75,.3);white-space:nowrap">Momento</th>
+            <th style="padding:6px 8px;text-align:center;background:rgba(232,184,75,.15);color:#e8b84b;border-bottom:2px solid rgba(232,184,75,.3);white-space:nowrap">Quem declara</th>
+            <th style="padding:6px 8px;text-align:center;background:rgba(232,184,75,.15);color:#e8b84b;border-bottom:2px solid rgba(232,184,75,.3);white-space:nowrap">Tipo do ato</th>
+            <th style="padding:6px 8px;text-align:center;background:rgba(232,184,75,.15);color:#e8b84b;border-bottom:2px solid rgba(232,184,75,.3);white-space:nowrap">Prazo / Forma</th>
+            <th style="padding:6px 8px;text-align:center;background:rgba(232,184,75,.15);color:#e8b84b;border-bottom:2px solid rgba(232,184,75,.3);white-space:nowrap">Ação Penal</th>
+            <th style="padding:6px 8px;text-align:center;background:rgba(232,184,75,.15);color:#e8b84b;border-bottom:2px solid rgba(232,184,75,.3);white-space:nowrap">Base Legal</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr><td>💀 Morte do Agente</td><td style="text-align:center">Qualquer</td><td style="text-align:center">Juiz</td><td style="text-align:center">Qualquer</td><td style="color:#7a9bbf">Art. 107, I CP</td></tr>
-          <tr><td>🏛️ Anistia/Graça/Indulto</td><td style="text-align:center">Qualquer</td><td style="text-align:center">Congresso/Presidente</td><td style="text-align:center">Qualquer</td><td style="color:#7a9bbf">Art. 107, II CP</td></tr>
-          <tr><td>📜 Retroatividade</td><td style="text-align:center">Qualquer</td><td style="text-align:center">Juiz (ex officio)</td><td style="text-align:center">Qualquer</td><td style="color:#7a9bbf">Art. 107, III CP</td></tr>
-          <tr><td>⏱️ Prescrição</td><td style="text-align:center">Qualquer</td><td style="text-align:center">Juiz (ex officio)</td><td style="text-align:center">Qualquer</td><td style="color:#7a9bbf">Arts. 109-119 CP</td></tr>
-          <tr><td>🔔 Decadência</td><td style="text-align:center">Pré-ação</td><td style="text-align:center">Juiz (ex officio)</td><td style="text-align:center">Privada/Condic.</td><td style="color:#7a9bbf">Art. 103 CP</td></tr>
-          <tr><td>🚫 Perempção</td><td style="text-align:center">Durante ação</td><td style="text-align:center">Juiz (ex officio)</td><td style="text-align:center">Privada</td><td style="color:#7a9bbf">Art. 60 CPP</td></tr>
-          <tr><td>🤝 Renúncia/Perdão aceito</td><td style="text-align:center">Pré/durante</td><td style="text-align:center">Ofendido</td><td style="text-align:center">Privada</td><td style="color:#7a9bbf">Art. 104-105 CP</td></tr>
-          <tr><td>🕊️ Perdão Judicial</td><td style="text-align:center">Sentença</td><td style="text-align:center">Juiz</td><td style="text-align:center">Qualquer</td><td style="color:#7a9bbf">Art. 107, IX CP</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.07)">
+            <td style="padding:5px 8px;color:#f1f5f9;font-weight:600">💀 Morte do Agente</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Qualquer fase</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Juiz</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">—</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Certidão de óbito</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Qualquer</td>
+            <td style="padding:5px 8px;text-align:center;color:#7a9bbf">Art. 107, I CP</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02)">
+            <td style="padding:5px 8px;color:#f1f5f9;font-weight:600">🏛️ Anistia / Graça / Indulto</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Qualquer fase</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Congresso / Presidente</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Ato estatal</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Lei / Decreto</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Qualquer</td>
+            <td style="padding:5px 8px;text-align:center;color:#7a9bbf">Art. 107, II CP</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.07)">
+            <td style="padding:5px 8px;color:#f1f5f9;font-weight:600">📜 Retroatividade de lei</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Qualquer fase</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Juiz (ex officio)</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Ato judicial</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Lei posterior mais benéfica</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Qualquer</td>
+            <td style="padding:5px 8px;text-align:center;color:#7a9bbf">Art. 107, III CP</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02)">
+            <td style="padding:5px 8px;color:#f1f5f9;font-weight:600">⏱️ Prescrição</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Qualquer fase</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Juiz (ex officio)</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Ato judicial</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Prazos variáveis (art. 109)</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Qualquer</td>
+            <td style="padding:5px 8px;text-align:center;color:#7a9bbf">Arts. 109–119 CP</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.07)">
+            <td style="padding:5px 8px;color:#f1f5f9;font-weight:600">🔔 Decadência</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Pré-ação</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Juiz (ex officio)</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Ato judicial</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">6 meses (regra geral)</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Privada / Condicionada</td>
+            <td style="padding:5px 8px;text-align:center;color:#7a9bbf">Art. 103 CP</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02)">
+            <td style="padding:5px 8px;color:#f1f5f9;font-weight:600">🚫 Perempção</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Durante ação</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Juiz (ex officio)</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Ato judicial</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Inércia do querelante</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Privada</td>
+            <td style="padding:5px 8px;text-align:center;color:#7a9bbf">Art. 60 CPP</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.07)">
+            <td style="padding:5px 8px;color:#f1f5f9;font-weight:600">🤝 Renúncia ao direito de queixa</td>
+            <td style="padding:5px 8px;text-align:center;color:#4ade80;font-weight:600">Pré-ação</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Ofendido / Representante</td>
+            <td style="padding:5px 8px;text-align:center;color:#fb923c;font-weight:600">Unilateral</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">6 meses · Expressa ou tácita · Extrajudicial</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Privada</td>
+            <td style="padding:5px 8px;text-align:center;color:#7a9bbf">Art. 107, V (1ª parte)</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02)">
+            <td style="padding:5px 8px;color:#f1f5f9;font-weight:600">🕊️ Perdão do ofendido (aceito)</td>
+            <td style="padding:5px 8px;text-align:center;color:#f87171;font-weight:600">Após ajuizamento</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Ofendido / Representante</td>
+            <td style="padding:5px 8px;text-align:center;color:#60a5fa;font-weight:600">Bilateral</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Até trânsito em julgado · Expresso ou tácito · Judicial ou extrajudicial</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Privada</td>
+            <td style="padding:5px 8px;text-align:center;color:#7a9bbf">Art. 107, V (2ª parte)</td>
+          </tr>
+          <tr>
+            <td style="padding:5px 8px;color:#f1f5f9;font-weight:600">⚖️ Perdão Judicial</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Sentença</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Juiz</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Ato judicial</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Crimes culposos com consequências graves ao autor</td>
+            <td style="padding:5px 8px;text-align:center;color:#94a3b8">Qualquer</td>
+            <td style="padding:5px 8px;text-align:center;color:#7a9bbf">Art. 107, IX CP</td>
+          </tr>
         </tbody>
       </table>
     </div>
   </div>
 </div>
 
-<!-- ===== S15 WOOCLAP ===== -->
 <div class="slide" data-s="12">
   <div class="blob" style="width:350px;height:350px;top:-80px;right:-60px;background:#e8b84b;opacity:.12;animation:fl1 9s ease-in-out infinite"></div>
   <div class="blob" style="width:250px;height:250px;bottom:-60px;left:-50px;background:#4e9af1;opacity:.09;animation:fl2 12s ease-in-out infinite"></div>
@@ -536,12 +620,6 @@ tr:nth-child(even) td{background:rgba(255,255,255,.02)}
         <p style="font-size:1rem;font-weight:700;color:#e8b84b;letter-spacing:2px">lansolutions.github.io/
 <span style="color:#4e9af1">grupo7-penal</span></p>
       </div>
-      <div style="display:flex;gap:20px;font-size:.72rem;color:#7a9bbf">
-        <span>☁️ Nuvem de palavras</span>
-        <span>⚖️ Enquetes</span>
-        <span>🌡️ Termômetro</span>
-      </div>
-      <p style="font-size:.63rem;color:#475569;font-style:italic">Acesse também: /admin.html para controlar as perguntas</p>
     </div>
   </div>
 </div>
