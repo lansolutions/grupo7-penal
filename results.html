@@ -7,45 +7,35 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;height:100%;background:#0a1628;font-family:'Segoe UI',sans-serif;color:#f1f5f9;overflow:hidden}
-.wrap{width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:16px}
-.aguarda{text-align:center;color:#475569}
-.aguarda .icon{font-size:2.5rem;margin-bottom:10px;animation:pulse 2s ease-in-out infinite}
+.wrap{width:100%;height:100%;overflow:hidden;padding:12px;display:flex;flex-direction:column;gap:10px}
+.aguarda{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#475569;gap:10px}
+.aguarda .icon{font-size:2rem;animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
-.aguarda p{font-size:.8rem}
-.result-card{width:100%;max-width:680px}
-.tipo-badge{font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:#7a9bbf;margin-bottom:6px}
-.pergunta-txt{font-size:1rem;font-weight:600;color:#f1f5f9;line-height:1.4;margin-bottom:16px}
-.votos{font-size:.65rem;color:#475569;margin-bottom:12px}
-
+.rcard{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:12px 14px;flex:1;min-height:0;display:flex;flex-direction:column}
+.tipo-badge{font-size:.55rem;letter-spacing:3px;text-transform:uppercase;color:#7a9bbf;margin-bottom:4px}
+.ptxt{font-size:.8rem;font-weight:600;color:#f1f5f9;line-height:1.3;margin-bottom:8px}
+.votos{font-size:.6rem;color:#475569;margin-bottom:8px}
 /* word cloud */
-.wc-wrap{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:80px;align-items:center}
-.wc-word{padding:5px 12px;border-radius:20px;background:rgba(232,184,75,.12);border:1px solid rgba(232,184,75,.25);color:#e8b84b;font-weight:600;transition:all .3s}
-
+.wc-wrap{display:flex;flex-wrap:wrap;gap:5px;align-content:flex-start;flex:1;overflow:hidden}
+.wc-word{padding:3px 9px;border-radius:16px;background:rgba(232,184,75,.1);border:1px solid rgba(232,184,75,.2);color:#e8b84b;font-weight:600}
 /* barras */
-.bar-item{margin-bottom:12px}
-.bar-label{display:flex;justify-content:space-between;font-size:.78rem;color:#cbd5e1;margin-bottom:5px}
-.bar-track{height:18px;background:rgba(255,255,255,.06);border-radius:8px;overflow:hidden}
-.bar-fill{height:100%;border-radius:8px;background:linear-gradient(to right,#e8b84b,#4e9af1);transition:width .6s ease}
-
+.bar-item{margin-bottom:7px}
+.bar-label{display:flex;justify-content:space-between;font-size:.7rem;color:#cbd5e1;margin-bottom:3px}
+.bar-track{height:14px;background:rgba(255,255,255,.06);border-radius:6px;overflow:hidden}
+.bar-fill{height:100%;border-radius:6px;background:linear-gradient(to right,#e8b84b,#4e9af1);transition:width .6s ease}
 /* escala */
-.scale-display{text-align:center}
-.scale-num{font-size:3rem;font-weight:900;color:#e8b84b;animation:glow 2s ease-in-out infinite}
-@keyframes glow{0%,100%{text-shadow:0 0 20px rgba(232,184,75,.5)}50%{text-shadow:0 0 40px rgba(232,184,75,.9)}}
-.scale-sub{font-size:.75rem;color:#7a9bbf;margin-top:4px}
-.scale-mini-bars{display:flex;gap:6px;justify-content:center;margin-top:14px;align-items:flex-end;height:50px}
-.smb{width:32px;border-radius:4px 4px 0 0;background:rgba(232,184,75,.3);transition:height .5s ease;position:relative}
+.scale-display{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;justify-content:center}
+.scale-num{font-size:2.2rem;font-weight:900;color:#e8b84b}
+.scale-sub{font-size:.62rem;color:#7a9bbf;text-align:center}
+.scale-mini-bars{display:flex;gap:5px;align-items:flex-end;height:40px}
+.smb{width:26px;border-radius:3px 3px 0 0;background:rgba(232,184,75,.25);transition:height .5s;position:relative;min-height:4px}
 .smb.active{background:#e8b84b}
-.smb-lbl{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:.6rem;color:#7a9bbf}
+.smb-lbl{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);font-size:.55rem;color:#7a9bbf}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div id="app">
-    <div class="aguarda">
-      <div class="icon">📊</div>
-      <p>Aguardando pergunta ativa...</p>
-    </div>
-  </div>
+<div class="wrap" id="wrap">
+  <div class="aguarda"><div class="icon">📊</div><p style="font-size:.8rem">Aguardando perguntas ativas...</p></div>
 </div>
 
 <script type="module">
@@ -64,84 +54,62 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-console.log("Results - Firebase OK:", app.name);
-const appEl = document.getElementById("app");
+const wrapEl = document.getElementById("wrap");
+let perguntas = {}, ativas = {}, respostas = {};
 
-let perguntaAtiva = null;
-let respostasListener = null;
+onValue(ref(db, "perguntas"), s => { perguntas = s.val()||{}; render(); });
+onValue(ref(db, "ativas"), s => { ativas = s.val()||{}; render(); });
+onValue(ref(db, "respostas"), s => { respostas = s.val()||{}; render(); });
 
-// Escuta qual pergunta está ativa
-onValue(ref(db, "ativa"), (snap) => {
-  console.log("Results - ativa:", snap.val());
-  const id = snap.val();
-  if (!id) { mostrarAguarda(); return; }
-  onValue(ref(db, "perguntas/" + id), (s) => {
-    perguntaAtiva = { id, ...s.val() };
-    escutarRespostas(id);
-  }, { onlyOnce: true });
-});
-
-function escutarRespostas(id) {
-  onValue(ref(db, "respostas/" + id), (snap) => {
-    const raw = snap.val() || {};
-    const respostas = Object.values(raw).map(r => r.valor);
-    renderResultado(perguntaAtiva, respostas);
-  });
+function render() {
+  const ids = Object.keys(ativas).filter(id => perguntas[id]);
+  if (!ids.length) {
+    wrapEl.innerHTML = `<div class="aguarda"><div class="icon">📊</div><p style="font-size:.8rem">Aguardando perguntas ativas...</p></div>`;
+    return;
+  }
+  wrapEl.innerHTML = ids.map(id => renderCard(id)).join("");
 }
 
-function mostrarAguarda() {
-  appEl.innerHTML = `<div class="aguarda"><div class="icon">📊</div><p>Aguardando pergunta ativa...</p></div>`;
-}
-
-function renderResultado(p, respostas) {
-  const total = respostas.length;
-  let html = `<div class="result-card">
-    <div class="tipo-badge">${tipoLabel(p.tipo)}</div>
-    <div class="pergunta-txt">${p.texto}</div>
-    <div class="votos">${total} resposta${total !== 1 ? "s" : ""} recebida${total !== 1 ? "s" : ""}</div>`;
+function renderCard(id) {
+  const p = perguntas[id];
+  const raw = respostas[id] ? Object.values(respostas[id]).map(r => r.valor) : [];
+  const total = raw.length;
+  let corpo = "";
 
   if (p.tipo === "wordcloud") {
     const freq = {};
-    respostas.forEach(r => { const w = String(r).trim().toLowerCase(); if(w) freq[w] = (freq[w]||0)+1; });
-    const sorted = Object.entries(freq).sort((a,b) => b[1]-a[1]);
-    const max = sorted[0]?.[1] || 1;
-    html += `<div class="wc-wrap">`;
-    sorted.forEach(([w, c]) => {
-      const size = 0.75 + (c/max)*1.2;
-      html += `<span class="wc-word" style="font-size:${size}rem;opacity:${0.5+c/max*0.5}">${w} <small style="opacity:.6">${c}</small></span>`;
-    });
-    html += `</div>`;
+    raw.forEach(r => { const w = String(r).trim().toLowerCase(); if(w) freq[w]=(freq[w]||0)+1; });
+    const sorted = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,20);
+    const max = sorted[0]?.[1]||1;
+    corpo = `<div class="wc-wrap">${sorted.map(([w,c])=>`<span class="wc-word" style="font-size:${0.7+c/max*0.7}rem">${w}${c>1?` <small style="opacity:.6">${c}</small>`:""}</span>`).join("")}</div>`;
   } else if (p.tipo === "enquete") {
-    const opts = p.opcoes || [];
-    const counts = opts.map((_, i) => respostas.filter(r => String(r) === String(i)).length);
-    html += opts.map((o, i) => {
-      const pct = total ? Math.round(counts[i]/total*100) : 0;
-      return `<div class="bar-item">
-        <div class="bar-label"><span>${o}</span><span>${counts[i]} (${pct}%)</span></div>
-        <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
-      </div>`;
+    const opts = p.opcoes||[];
+    const counts = opts.map((_,i)=>raw.filter(r=>String(r)===String(i)).length);
+    corpo = opts.map((o,i)=>{
+      const pct = total?Math.round(counts[i]/total*100):0;
+      return `<div class="bar-item"><div class="bar-label"><span>${o}</span><span>${counts[i]} (${pct}%)</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
     }).join("");
   } else if (p.tipo === "escala") {
-    const nums = respostas.map(r => Number(r)).filter(n => n >= 1 && n <= 5);
-    const media = nums.length ? (nums.reduce((a,b)=>a+b,0)/nums.length).toFixed(1) : "–";
-    const counts = [1,2,3,4,5].map(v => nums.filter(n=>n===v).length);
-    const maxC = Math.max(...counts, 1);
-    html += `<div class="scale-display">
-      <div class="scale-num">${media}<span style="font-size:1.2rem;color:#7a9bbf">/5</span></div>
-      <div class="scale-sub">${p.min_label || "Discordo totalmente"} ←→ ${p.max_label || "Concordo totalmente"}</div>
-      <div class="scale-mini-bars">
-        ${counts.map((c,i)=>`<div class="smb ${c===maxC&&c>0?"active":""}" style="height:${Math.max(10,c/maxC*46)}px"><span class="smb-lbl">${i+1}</span></div>`).join("")}
-      </div>
+    const nums = raw.map(r=>Number(r)).filter(n=>n>=1&&n<=5);
+    const media = nums.length?(nums.reduce((a,b)=>a+b,0)/nums.length).toFixed(1):"–";
+    const counts = [1,2,3,4,5].map(v=>nums.filter(n=>n===v).length);
+    const maxC = Math.max(...counts,1);
+    corpo = `<div class="scale-display">
+      <div class="scale-num">${media}<span style="font-size:1rem;color:#7a9bbf">/5</span></div>
+      <div class="scale-sub">${p.min_label||"Discordo"} ←→ ${p.max_label||"Concordo"}</div>
+      <div class="scale-mini-bars">${counts.map((c,i)=>`<div class="smb ${c===maxC&&c>0?"active":""}" style="height:${Math.max(4,c/maxC*38)}px"><span class="smb-lbl">${i+1}</span></div>`).join("")}</div>
     </div>`;
   }
 
-  html += `</div>`;
-  appEl.innerHTML = html;
+  return `<div class="rcard">
+    <div class="tipo-badge">${tipoLabel(p.tipo)}</div>
+    <div class="ptxt">${p.texto}</div>
+    <div class="votos">${total} resposta${total!==1?"s":""}</div>
+    ${corpo}
+  </div>`;
 }
 
-function tipoLabel(t) {
-  return { wordcloud: "☁️ Nuvem de palavras", enquete: "⚖️ Enquete", escala: "🌡️ Termômetro" }[t] || t;
-}
+function tipoLabel(t){return{wordcloud:"☁️ Nuvem",enquete:"⚖️ Enquete",escala:"🌡️ Termômetro"}[t]||t;}
 </script>
 </body>
 </html>

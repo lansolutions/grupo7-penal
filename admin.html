@@ -21,7 +21,7 @@ select option{background:#0a1628}
 .btn{padding:11px 20px;border:none;border-radius:9px;font-size:.85rem;font-weight:700;cursor:pointer;transition:opacity .2s}
 .btn:hover{opacity:.85}
 .btn-gold{background:linear-gradient(135deg,#e8b84b,#d4a832);color:#0a1628;width:100%;margin-top:12px}
-.btn-ativar{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#86efac;flex:1}
+.btn-ativar{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#86efac;flex:1;padding:8px 12px;font-size:.78rem;border-radius:8px;cursor:pointer}
 .btn-ativar.ativo{background:rgba(34,197,94,.3);border-color:#22c55e}
 .btn-del{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:#fca5a5;padding:8px 14px;font-size:.75rem;border-radius:8px;cursor:pointer}
 .pcard{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;margin-bottom:10px}
@@ -37,6 +37,7 @@ select option{background:#0a1628}
 .btn-addopt{background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.2);border-radius:8px;padding:8px;font-size:.75rem;color:#7a9bbf;cursor:pointer;width:100%;margin-top:4px}
 .desativar-wrap{text-align:center;margin-bottom:16px}
 .btn-desativar{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#fca5a5;padding:10px 24px;border-radius:10px;font-size:.82rem;font-weight:600;cursor:pointer}
+.ativas-count{font-size:.7rem;color:#86efac;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);border-radius:20px;padding:3px 12px;display:inline-block;margin-bottom:12px}
 </style>
 </head>
 <body>
@@ -44,18 +45,16 @@ select option{background:#0a1628}
   <h1>⚙️ Painel Admin</h1>
   <p class="sub">Extinção da Punibilidade · Grupo 7</p>
 
-  <!-- DESATIVAR TUDO -->
   <div class="desativar-wrap">
-    <button class="btn-desativar" onclick="desativarTudo()">⏹ Desativar pergunta ativa</button>
+    <button class="btn-desativar" onclick="desativarTodas()">⏹ Desativar todas</button>
   </div>
 
-  <!-- LISTA DE PERGUNTAS -->
   <div class="section">
     <div class="section-title">Perguntas cadastradas</div>
+    <div id="ativas-info"></div>
     <div id="lista-perguntas"><div class="nenhuma">Carregando...</div></div>
   </div>
 
-  <!-- CADASTRO -->
   <div class="section">
     <div class="section-title">Cadastrar nova pergunta</div>
     <div class="card">
@@ -65,12 +64,9 @@ select option{background:#0a1628}
         <option value="enquete">⚖️ Enquete (múltipla escolha)</option>
         <option value="escala">🌡️ Termômetro (escala 1–5)</option>
       </select>
-
       <label>Texto da pergunta</label>
       <textarea id="texto" placeholder="Digite a pergunta..."></textarea>
-
       <div id="extras"></div>
-
       <button class="btn btn-gold" onclick="cadastrar()">+ Cadastrar pergunta</button>
     </div>
   </div>
@@ -78,7 +74,7 @@ select option{background:#0a1628}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, onValue, push, set, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, onValue, push, set, remove, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCcpZjXuHspxtWU5uibac7BjB9J-ye6bOk",
@@ -92,41 +88,32 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-console.log("Firebase iniciado:", app.name);
-console.log("DB URL:", "https://penalgrupo7-default-rtdb.firebaseio.com");
 let perguntas = {};
-let ativaId = null;
+let ativas = {};  // agora é um objeto com múltiplos IDs
 
-// Escuta perguntas
-onValue(ref(db, "perguntas"), (snap) => {
-  perguntas = snap.val() || {};
-  renderLista();
-});
-
-// Escuta ativa
-onValue(ref(db, "ativa"), (snap) => {
-  ativaId = snap.val();
-  renderLista();
-});
+onValue(ref(db, "perguntas"), (snap) => { perguntas = snap.val() || {}; renderLista(); });
+onValue(ref(db, "ativas"), (snap) => { ativas = snap.val() || {}; renderLista(); });
 
 function renderLista() {
   const el = document.getElementById("lista-perguntas");
+  const infoEl = document.getElementById("ativas-info");
   const ids = Object.keys(perguntas);
+  const nAtivas = Object.keys(ativas).length;
+  infoEl.innerHTML = nAtivas > 0
+    ? `<div class="ativas-count">✅ ${nAtivas} pergunta${nAtivas>1?"s":""} ativa${nAtivas>1?"s":""} agora</div>`
+    : '';
   if (!ids.length) { el.innerHTML = `<div class="nenhuma">Nenhuma pergunta cadastrada.</div>`; return; }
   el.innerHTML = ids.map(id => {
     const p = perguntas[id];
-    const isAtiva = id === ativaId;
+    const isAtiva = !!ativas[id];
     return `<div class="pcard">
       <div class="pcard-top">
-        <div>
-          <div class="pcard-txt">${p.texto}</div>
-          <div class="pcard-tipo">${tipoLabel(p.tipo)}</div>
-        </div>
+        <div><div class="pcard-txt">${p.texto}</div><div class="pcard-tipo">${tipoLabel(p.tipo)}</div></div>
         <button class="btn-del" onclick="deletar('${id}')">🗑</button>
       </div>
       <div class="pcard-actions">
-        <button class="btn btn-ativar ${isAtiva ? "ativo" : ""}" onclick="ativar('${id}')">
-          ${isAtiva ? "✅ Ativa agora" : "▶ Ativar"}
+        <button class="btn-ativar ${isAtiva?"ativo":""}" onclick="toggleAtiva('${id}')">
+          ${isAtiva ? "✅ Ativa — clique p/ desativar" : "▶ Ativar"}
         </button>
         ${isAtiva ? `<span class="ativo-badge">AO VIVO</span>` : ""}
       </div>
@@ -134,13 +121,21 @@ function renderLista() {
   }).join("");
 }
 
-window.ativar = async (id) => { await set(ref(db, "ativa"), id); };
-window.desativarTudo = async () => { await set(ref(db, "ativa"), null); };
+window.toggleAtiva = async (id) => {
+  if (ativas[id]) {
+    await remove(ref(db, "ativas/" + id));
+  } else {
+    await set(ref(db, "ativas/" + id), true);
+  }
+};
+
+window.desativarTodas = async () => { await set(ref(db, "ativas"), null); };
+
 window.deletar = async (id) => {
   if (!confirm("Deletar esta pergunta?")) return;
   await remove(ref(db, "perguntas/" + id));
   await remove(ref(db, "respostas/" + id));
-  if (ativaId === id) await set(ref(db, "ativa"), null);
+  await remove(ref(db, "ativas/" + id));
 };
 
 window.cadastrar = async () => {
@@ -159,15 +154,11 @@ window.cadastrar = async () => {
       dados.min_label = document.getElementById("min_label").value || "Discordo totalmente";
       dados.max_label = document.getElementById("max_label").value || "Concordo totalmente";
     }
-    alert("Conectando ao Firebase...");
-    const result = await push(ref(db, "perguntas"), dados);
-    alert("✅ Pergunta cadastrada! ID: " + result.key);
+    await push(ref(db, "perguntas"), dados);
     document.getElementById("texto").value = "";
     renderOpcoes();
-  } catch(e) {
-    alert("❌ ERRO: " + e.message);
-    console.error(e);
-  }
+    alert("✅ Pergunta cadastrada!");
+  } catch(e) { alert("❌ Erro: " + e.message); }
 };
 
 window.renderOpcoes = function() {
@@ -181,26 +172,21 @@ window.renderOpcoes = function() {
       </div>
       <button class="btn-addopt" onclick="addOpt()">+ Adicionar opção</button>`;
   } else if (tipo === "escala") {
-    el.innerHTML = `<label>Rótulo esquerda (discordo)</label>
-      <input id="min_label" placeholder="Discordo totalmente">
-      <label>Rótulo direita (concordo)</label>
-      <input id="max_label" placeholder="Concordo totalmente">`;
+    el.innerHTML = `<label>Rótulo esquerda</label><input id="min_label" placeholder="Discordo totalmente">
+      <label>Rótulo direita</label><input id="max_label" placeholder="Concordo totalmente">`;
   } else { el.innerHTML = ""; }
 };
 
 window.addOpt = function() {
   const c = document.getElementById("opts-container");
-  const n = c.children.length + 1;
-  const div = document.createElement("div");
-  div.className = "opt-row";
-  div.innerHTML = `<input class="opt-input" placeholder="Opção ${n}">`;
+  const div = document.createElement("div"); div.className = "opt-row";
+  div.innerHTML = `<input class="opt-input" placeholder="Opção ${c.children.length+1}">`;
   c.appendChild(div);
 };
 
 function tipoLabel(t) {
-  return { wordcloud: "☁️ Nuvem de palavras", enquete: "⚖️ Enquete", escala: "🌡️ Termômetro" }[t] || t;
+  return {wordcloud:"☁️ Nuvem de palavras",enquete:"⚖️ Enquete",escala:"🌡️ Termômetro"}[t]||t;
 }
-
 renderOpcoes();
 </script>
 </body>
