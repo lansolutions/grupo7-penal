@@ -24,6 +24,7 @@ select option{background:#0a1628}
 .btn-ativar{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#86efac;flex:1;padding:8px 12px;font-size:.78rem;border-radius:8px;cursor:pointer}
 .btn-ativar.ativo{background:rgba(34,197,94,.3);border-color:#22c55e}
 .btn-del{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:#fca5a5;padding:8px 14px;font-size:.75rem;border-radius:8px;cursor:pointer}
+.btn-reset{background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.25);color:#fdba74;padding:8px 14px;font-size:.75rem;border-radius:8px;cursor:pointer}
 .pcard{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;margin-bottom:10px}
 .pcard-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px}
 .pcard-txt{font-size:.82rem;color:#f1f5f9;line-height:1.4;flex:1}
@@ -109,6 +110,7 @@ function renderLista() {
     return `<div class="pcard">
       <div class="pcard-top">
         <div><div class="pcard-txt">${p.texto}</div><div class="pcard-tipo">${tipoLabel(p.tipo)}</div></div>
+        <button class="btn-del" onclick="resetar('${id}')">🔄 Resetar</button>
         <button class="btn-del" onclick="deletar('${id}')">🗑</button>
       </div>
       <div class="pcard-actions">
@@ -136,6 +138,12 @@ window.deletar = async (id) => {
   await remove(ref(db, "perguntas/" + id));
   await remove(ref(db, "respostas/" + id));
   await remove(ref(db, "ativas/" + id));
+};
+
+window.resetar = async (id) => {
+  if (!confirm("Limpar todas as respostas desta pergunta?\nA pergunta não será excluída.")) return;
+  await remove(ref(db, "respostas/" + id));
+  alert("✅ Respostas resetadas!");
 };
 
 window.cadastrar = async () => {
