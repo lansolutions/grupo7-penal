@@ -79,12 +79,12 @@ tr:nth-child(even) td{background:rgba(255,255,255,.02)}
 .woo-qr svg{width:100%;height:100%}
 </style>
 <style>
-#s13-results-wrap{width:100%;height:100%;overflow:hidden;padding:5px;display:flex;flex-direction:column;gap:4px;box-sizing:border-box;container-type:size}
+#s13-results-wrap{width:100%;height:100%;overflow:hidden;padding:6px;display:flex;flex-direction:column;gap:5px;box-sizing:border-box;container-type:size}
 .wrap::-webkit-scrollbar{width:4px}
 .wrap::-webkit-scrollbar-thumb{background:rgba(232,184,75,.3);border-radius:4px}
 #s13-results-wrap .aguarda{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#475569;gap:10px}
 #s13-results-wrap .aguarda .icon{font-size:2rem;animation:pulse 2s ease-in-out infinite}
-#s13-results-wrap .rcard{background:rgba(255,255,255,.07);border:1.5px solid rgba(78,154,241,.5);border-radius:10px;padding:8px 12px;display:flex;flex-direction:row;align-items:stretch;gap:10px;flex:1;min-height:90px;overflow:hidden;box-sizing:border-box;box-shadow:0 0 0 1px rgba(232,184,75,.08) inset}#s13-results-wrap .rcard-left{flex:0 0 clamp(160px,47%,380px);display:flex;flex-direction:column;justify-content:center;gap:2px;min-width:0;overflow:hidden}#s13-results-wrap .rcard-right{flex:1;display:flex;flex-direction:column;align-items:stretch;justify-content:center;min-width:0;overflow:hidden;min-height:0}
+#s13-results-wrap .rcard{background:rgba(255,255,255,.07);border:1.5px solid rgba(78,154,241,.5);border-radius:10px;padding:8px 12px;display:flex;flex-direction:row;align-items:stretch;gap:10px;flex:1;min-height:60px;overflow:hidden;box-sizing:border-box;box-shadow:0 0 0 1px rgba(232,184,75,.08) inset}#s13-results-wrap .rcard-left{flex:1;display:flex;flex-direction:column;justify-content:center;gap:2px;min-width:0;overflow:hidden}#s13-results-wrap .rcard-right{flex:0 0 clamp(120px,51%,420px);display:flex;align-items:stretch;justify-content:flex-end;margin-left:auto;min-width:0;overflow:hidden;min-height:0}
 #s13-results-wrap .tipo-badge{font-size:.52rem;letter-spacing:2px;text-transform:uppercase;color:#7a9bbf;margin-bottom:2px}
 #s13-results-wrap .ptxt{font-size:clamp(.7rem,.95vw,.88rem);font-weight:600;color:#f1f5f9;line-height:1.35;margin-bottom:3px;overflow:hidden}
 #s13-results-wrap .votos{font-size:.58rem;color:#475569;margin-bottom:3px}
@@ -92,9 +92,8 @@ tr:nth-child(even) td{background:rgba(255,255,255,.02)}
 #s13-results-wrap .wc-wrap{display:flex;flex-wrap:wrap;gap:5px;align-content:flex-start;width:100%;overflow:hidden}
 #s13-results-wrap .wc-word{padding:3px 9px;border-radius:16px;background:rgba(232,184,75,.1);border:1px solid rgba(232,184,75,.2);color:#e8b84b;font-weight:600}
 /* barras */
-#s13-results-wrap .bar-list{display:flex;flex-direction:column;justify-content:center;gap:7px;width:100%;padding:2px 0}
-#s13-results-wrap .bar-item{width:100%}
-#s13-results-wrap .bar-label{display:flex;justify-content:space-between;font-size:.682rem;color:#cbd5e1;margin-bottom:2px}
+#s13-results-wrap .bar-item{margin-bottom:3px;width:100%}
+#s13-results-wrap .bar-label{display:flex;justify-content:space-between;font-size:.62rem;color:#cbd5e1;margin-bottom:2px}
 #s13-results-wrap .bar-track{height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
 #s13-results-wrap .bar-fill{height:100%;border-radius:3px;background:linear-gradient(to right,#e8b84b,#4e9af1)}
 /* escala */
@@ -122,7 +121,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.02)}
     <p class="rv" style="font-size:.72rem;letter-spacing:5px;text-transform:uppercase;color:#7a9bbf;margin-bottom:20px">Direito Penal · Art. 107 CP · Grupo 7</p>
     <p class="rv" style="font-size:.68rem;letter-spacing:3px;text-transform:uppercase;color:#a78bfa;margin-bottom:8px">3º Semestre · 2026/1</p>
     <div class="rv" style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px">
-      <span style="background:rgba(232,184,75,.1);border:1px solid rgba(232,184,75,.25);border-radius:20px;padding:4px 14px;font-size:.68rem;color:#e8b84b">André Nascimento · Guilherme Lacerda · Letícia Jesus · Camila Santos · Cleberson Rodrigues · Amanda Damascena · Isabela Santos</span>
+      <span style="background:rgba(232,184,75,.1);border:1px solid rgba(232,184,75,.25);border-radius:20px;padding:4px 14px;font-size:.68rem;color:#e8b84b">Guilherme Lacerda · André Nascimento · Letícia de Jesus · Camila Santos · Cleberson Rodrigues · Amanda Damascena · Isabela Santos</span>
     </div>
   </div>
 </div>
@@ -170,13 +169,13 @@ tr:nth-child(even) td{background:rgba(255,255,255,.02)}
         </div>
         <div class="gc rv">
           <div style="font-size:.72rem;font-weight:700;color:#4e9af1;margin-bottom:6px">Prova exigida</div>
-          <p style="font-size:.75rem;color:#cbd5e1;line-height:1.6">Certidão de óbito <strong>original e autêntica</strong>. Certidão falsa não extingue — processo é retomado (STF, RHC 79.973).</p>
+          <p style="font-size:.75rem;color:#cbd5e1;line-height:1.6">Certidão de óbito <strong>original e autêntica</strong>. Certidão falsa não extingue — processo é retomado (STF, HC 84.525/MG).</p>
         </div>
       </div>
       <div class="gc rv" style="border-left:3px solid #e8b84b">
         <div style="font-size:.72rem;font-weight:700;color:#e8b84b;margin-bottom:8px">📋 Caso Concreto</div>
         <p style="font-size:.75rem;color:#cbd5e1;line-height:1.7;margin-bottom:8px"><strong>Rian Bonfim de Jesus</strong>, 23 anos — Eunápolis/BA, março/2026.</p>
-        <p style="font-size:.75rem;color:#cbd5e1;line-height:1.7;margin-bottom:8px">Matou o Capitão da Reserva Jozival da Silva (68 anos) ao tentar separar briga de casal. Fugiu para mata urbana e <strong>morreu em confronto com a PM</strong>.</p>
+        <p style="font-size:.75rem;color:#cbd5e1;line-height:1.7;margin-bottom:8px">Matou o Capitão da Reserva Jozival da Silva (68 anos) ao tentar separar briga de casal. Fugiu para mata urbana e <strong>morreu em confronto com a PM</strong>. <em>(Caso noticiado — decisão judicial de extinção da punibilidade não localizada até a elaboração deste trabalho. Em tese, comprovado o óbito, incide o art. 107, I, CP.)</em></p>
         <div style="background:rgba(232,184,75,.08);border-radius:6px;padding:7px 10px;font-size:.68rem;color:#e8b84b">⚖️ Consequência: Inquérito encerrado — art. 107, I CP. Efeito cível subsiste (art. 91, I CP).</div>
       </div>
     </div>
@@ -246,7 +245,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.02)}
     </div>
     <div class="gc rv" style="border-left:3px solid #4e9af1;margin-bottom:10px">
       <div style="font-size:.72rem;font-weight:700;color:#4e9af1;margin-bottom:5px">📋 Caso Concreto — Daniel Silveira (Graça, 2022)</div>
-      <p style="font-size:.73rem;color:#cbd5e1;line-height:1.6">Deputado federal condenado pelo STF a 8 anos e 9 meses por atos antidemocráticos. O Presidente Bolsonaro concedeu <strong>graça individual</strong> pelo Decreto de 21/04/2022 — caso único e polêmico na história republicana brasileira. O STF reconheceu a graça, mas registrou ressalvas constitucionais sobre seus limites.</p>
+      <p style="font-size:.73rem;color:#cbd5e1;line-height:1.6">Deputado federal condenado pelo STF a 8 anos e 9 meses por atos antidemocráticos. O Presidente Bolsonaro concedeu <strong>graça individual</strong> pelo Decreto de 21/04/2022 — caso único e polêmico na história republicana brasileira. Posteriormente, o STF julgou procedentes as <strong>ADPFs 964, 965, 966 e 967</strong> e <strong>declarou o decreto inconstitucional</strong>, por violação à separação dos Poderes. A punibilidade de Daniel Silveira foi mantida integralmente.</p>
     </div>
   </div>
 </div>
@@ -286,8 +285,8 @@ tr:nth-child(even) td{background:rgba(255,255,255,.02)}
   <div class="blob" style="width:200px;height:200px;bottom:-50px;right:-40px;background:#4e9af1;opacity:.07;animation:fl2 14s ease-in-out infinite"></div>
     <!-- QR -->
   <div class="qr-badge">
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUgAAAFIAQAAAAAab1qeAAACVUlEQVR4nO2aUQ/bIAyEv5v6///y7cFnyNNEp20EDVdNQzkpYBn7bEdmUX6sAi/yIv8YEnveGDAGYzvXnj1lR3uRH8AAAuT6IAsD8pw9ZUcvQEqlzVgnoNiqxuwb1nkA8vMcGIEtMCpl/t2n/w9IYRCWp/f8d08/HfmBuMiIASziRefsKTvar89xrmUqHmUka86esqPt+hzWWdaofAHLc/aUHe3nn85N4nt7zTDRzF3+uSQyFcpN+8umnJODCu9e5ynIJu/Nkfq/1mlG+JgdbUcaLBtEeH1Zq1Cu9hvWeQxSAELGlrBKw4nspdo3rPME5GfklhrME2WcXL7O/ik72h/fK8YnmHeE9/gpj3Dj+5p4sqWojv7pse2rz0UJn6/Y84zyiewqD7B9nacg1cWPST87cZ95k3X556o86/M8zrvjOdsP3PO+inQ+kIzdOf+VgKrI6f51HoHsAN5W2Np1ovqISNc+V5HR4GD1camUcQ7b3b7OI5DYfhpjO81mpO1Ur31+gUw01zjeUhP80eF8wzoPQD4tcIRy8hczWF37XBO5y3MaTc1uGY+anW58X5XqF1tR6eT36ryo0qdb//wCKZUJjnIyThHU6cbf/GhVBiFqnjkrIANy/ecyUp63CedV/ezUqLnoMTva7j+7CVfsXSnN1yg9+ds/WpXH+3WlzRTqhrX61pe+959MH2o3E334z5sf/RbSGMlS15dmEv+qdb4Y+Xxfsd9baraU4+5bn/8SGUNMGu9QevI22O2//159ntGG66r8vFz/uSgP/rnh6Rd5kb+Wn1pdprHh1LbQAAAAAElFTkSuQmCC" style="width:64px;height:64px;border-radius:8px;background:#fff;padding:2px">
-        <span>STF HC 180.421<br>Retroatividade</span>
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWgAAAFoAQAAAABSnlx4AAACyklEQVR4nO2by24CMRAEq6P9/1/uHGbG9uYQKcIEGxwCgt06jIzV7nkg84e/r7/Ahz70y2ns/ib/8wG2fSPWiXtX+gIMoHiRDVhgJBx3i1gn7l3pC0BgEML1lMhllxuxUNxvQxuViliArBdF8pb0NbyP9cUILJw7/Z8i+Qz6gpRnwJKbdlhGcaUR68S9Kz24j18eha4T9660er4jHHJtFKdkyMmQEa0T9650iAaEZAgrTUmdk+lOjj+ZQ2MzyobTcVOpz3D76MnjdOqJYkfnHu+OnHAqoTErxb0rrS4j5f5yoR03U1Xie1kn7l3pUA0IAbkrSBHxwT56MoV2/RMpj3yzgpllWqd+MoG+0qJQuSXUJ6yyL6ktC8W9K10+O3yfU7jzSh6dzm/EC8W9Ky23Za5UJ7f5UDdxXVwn7l3pXo+N9S1xcdMWOcriOvt7An3vN+S+ltUTS8eXcfR7Ct3qJKksPysq3YmLs78fp1M8SsHrYtvf7hfOes+hbVyeO7qYltOvgKSyhIvFvSWt5rjLEHr81M5MnfrgFDpym25K6FbFDHLjp0fyGXT2d+qlZ/GMV3zqJzPpGDGJFrGqED4UrGpSYrW496RtWSnWghzzkWXXEAo+9e859AVDcaoJt8f6iUChO+vEvTHdClLEzAka3PeQYT4/kg+g1aZ7hrwyKirVOR4qsuvEvSsdM7E1hFLdHVw38jBNl7JO3LvStX1bKk+dkL2Y0qrjC8W9NZ0HpFDm8zg+Yyk7P6f+PYX+OV/F0JHPbd9aEmd/P05frZHj1umhztBwgr28slDcO9OOA1OtgyZaq6E90T9E8v708PsGKp10lsJrdLPXxteJe1d6nLdPT2KBa94+iuM681WT6HG9FbaEqs+GgldK/+xIPoMeft8QVqR+1NAWvtL6U6+aQbd61X0mFsvKXk+6laPfM+hb1eSlkRz60PPpb6vvykXzwH3uAAAAAElFTkSuQmCC" style="width:64px;height:64px;border-radius:8px;background:#fff;padding:2px">
+        <span>TJ-BA · Porto Seguro<br>EDCiv 2024</span>
       </div>
   <div style="position:relative;z-index:2;width:92%">
     <p class="tag rv">Art. 107, III CP</p>
@@ -303,6 +302,15 @@ tr:nth-child(even) td{background:rgba(255,255,255,.02)}
           <p style="font-size:.73rem;color:#cbd5e1;line-height:1.6">A <strong>Lei 13.964/2019</strong> transformou estelionato em ação condicionada à representação. STF decidiu pela retroatividade: processos sem representação da vítima foram extintos por falta de condição de procedibilidade.</p>
         </div>
       </div>
+      <div>
+        <div class="gc rv" style="border-top:2px solid #a78bfa;margin-bottom:10px">
+          <div style="font-size:.72rem;font-weight:700;color:#a78bfa;margin-bottom:5px">📋 Caso correlato — TJ-BA · Porto Seguro (2024)</div>
+          <p style="font-size:.70rem;color:#cbd5e1;line-height:1.55"><strong>Gilberto Pereira Abade</strong> foi réu em Ação Civil Pública por improbidade administrativa (Art. 11, I — LIA) desde 2013. Com a <strong>Lei 14.230/21</strong>, a conduta imputada — mera transgressão a princípios da Administração — deixou de existir no ordenamento. TJ-BA reconheceu a retroatividade da lei sancionadora mais benéfica e decretou improcedência dos pedidos. Embargos do Município de Porto Seguro rejeitados por unanimidade. <em>(Atenção: trata-se de direito sancionador cível-administrativo, não de extinção da punibilidade penal do art. 107 do CP.)</em></p>
+          <div style="background:rgba(167,139,250,.10);border-radius:5px;padding:5px 8px;font-size:.62rem;color:#a78bfa;margin-top:5px">EDCiv 0008041-66.2013.8.05.0201.1 · Relª. Desª. Lisbete M. T. A. C. Santos · 03 set. 2024</div>
+        
+        </div>
+      </div>
+
       <div class="gc rv" style="border-left:3px solid #e8b84b">
         <div style="font-size:.72rem;font-weight:700;color:#e8b84b;margin-bottom:8px">Fundamento</div>
         <p style="font-size:.75rem;color:#cbd5e1;line-height:1.7;margin-bottom:10px">Art. 5°, XL, CF/88 — <em>"a lei penal não retroagirá, salvo para beneficiar o réu."</em></p>
@@ -321,43 +329,88 @@ tr:nth-child(even) td{background:rgba(255,255,255,.02)}
 
 <!-- ===== S6 PRESCRIÇÃO ===== -->
 <div class="slide" data-s="6">
-  <div class="blob" style="width:300px;height:300px;top:-60px;right:-50px;background:#4e9af1;opacity:.09;animation:fl1 9s ease-in-out infinite"></div>
-  <div class="blob" style="width:200px;height:200px;bottom:-50px;left:-40px;background:#e8b84b;opacity:.07;animation:fl2 12s ease-in-out infinite"></div>
-  <!-- QR Lula/Triplex -->
-  <div class="qr-badge">
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAagAAAGoAQAAAAA7yUxtAAADyElEQVR4nO1c4WrmMAyTjr7/K+t+WLazwcEY3NJk/r51dG3FaoJj2VZC4RufP98BDWpQvw71AIwzEQIFAAREARQBxROKvwBAB9h1K+oB4DGK4SBEUYSHj4QgkOgnD7DrVtQDhD8BtB9BMS4iAELhbDma0A+/4aD+gVIcJEDIPEQiSA/j7jcc1AeU/JsAyYhiEd0cx7a/4aAeIIciIhjzzK4GUCTMRPTzbzioD5+c+KAvfBPyfrtuRT090akmxHUCVLgW1wE7wK6LURGjSIAURUai5RCGHLyYKOPpI+y6FSWC9iFRniCVbBFNNYp6nGHXtaiuaUBgfBnTogSUZxUDOcSuW1FMX/KhHEDm+CASZ2aQO8Oum1FRwuAySDLxUFU1KDnYnWPXbShIOfOpixqA4kbejAtZqBo+vw31ZB0qEmTRLJ5dt8/CIv3U8MPdqIxbSQjZFQ5/P5QUj7HrUhQhRAuF0U3pWbKS5iKKE7+2o9zswupB5VaKwczrMVWeYdelqOSEjmPpa9LiUGaNijLHGXZdiYLMDKW1rFv0EH30neGHe1HNKVyacoNFJhmu/mry5VegCMlimiIWqlIvqypvMc7Er42oKBGaTngW7J4YnCsvuTQ0+fJG1JOSmuQVTotR6XP1nJ2mDZ/fjEo1gPWGWetIXmgSUnRRky/vRqU7mQR2tmXRaEc3kBO/dqLc4orTJuzd+jfZzwvB7N9v162o0vciZYZMjWjmzRm0IKYo+/123Ypyr6S9qqmh+qfuOLN+v123osK/xI5Qi1hDmSKzfCw44/vtuhglkMkJAdKcAiW2yVaKMp0+w64rUQ/gEBUrU5AhSgxdL6pStekNB/UZ1TlxtJUpuXKYGo5spWTT+Qy7bkSVcONTg3Kp1gtLySr4/fvtuhjFbIFV/6S4Rcqw2USEw+c3oyKtkqpY6GIUva6y1NhKcn+GXfeiYtkrxFBkM5VQa5kelUlPPWozSmYY7n0VzyCt3rC+rfvNZ9h1K4oSGEvMSeWy5RTZdDeFo5/fjmq5ddfhw8tyo4BUZKNkUifYdSvKAo3oInfIUtH3IvJ9Y/j8PtTTmRWFVIsms+CydiW5xugPd6KW/W1c3khOkW3LIotEzYzvt+tWFGsPIve5hFz60PuooNvLEcTeb9etqGV/m2hRElI5knoJrLckipF8v12/AcXUspUUkVoFpJGTTX3jJahIveiTUkhl76sqUvvecFDr/jaWZ3jR+bKJg3oidAr2frtuRT0oghj1XcCUMAm+1dlsSeLEr32oVsf///81qEH9NtRfHo5gz4+gs+IAAAAASUVORK5CYII=" style="width:64px;height:64px;border-radius:8px;background:#fff;padding:2px">
-    <span>G1 — Caso<br>Lula/Triplex</span>
-  </div>
+  <div class="blob" style="width:300px;height:300px;top:-60px;right:-60px;background:radial-gradient(circle,rgba(78,154,241,.18),transparent 70%)"></div>
   <div style="position:relative;z-index:2;width:92%">
     <p class="tag rv">Arts. 109-119 CP</p>
-    <h2 class="rv" style="font-family:'Playfair Display',serif;font-size:1.7rem;color:#4e9af1;margin-bottom:10px">⏱️ Prescrição — Caso Lula/Triplex</h2>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-      <div>
-        <div class="gc rv" style="border-left:3px solid #4e9af1;margin-bottom:10px">
-          <div style="font-size:.72rem;font-weight:700;color:#4e9af1;margin-bottom:5px">📋 O que aconteceu</div>
-          <p style="font-size:.73rem;color:#cbd5e1;line-height:1.65">Condenado pela Lava Jato em Curitiba, o STF anulou o processo em 2021 por incompetência de juízo. Com os processos reiniciando em Brasília, o MPF calculou os prazos: Lula tinha <strong>mais de 70 anos</strong> → prazo prescricional cai pela <strong>metade</strong> (art. 115 CP). Em janeiro/2022 a punibilidade foi declarada extinta.</p>
+    <h2 class="rv" style="font-family:'Playfair Display',serif;font-size:1.7rem;color:#4e9af1;margin-bottom:10px">⏱️ Prescrição</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+
+      <!-- COLUNA 1: Conceito + Tipos -->
+      <div style="display:flex;flex-direction:column;gap:10px">
+
+        <div class="gc rv" style="border-left:3px solid #4e9af1">
+          <div style="font-size:.72rem;font-weight:700;color:#4e9af1;margin-bottom:5px">O que é</div>
+          <p style="font-size:.71rem;color:#cbd5e1;line-height:1.65">Perda do direito de punir pelo <strong>decurso do tempo</strong> sem que o Estado exercite a pretensão punitiva ou executória. Fundamento: segurança jurídica e interesse social no esquecimento do fato.</p>
         </div>
-        <div class="gc rv" style="background:rgba(78,154,241,.07);border:1px solid rgba(78,154,241,.2)">
-          <div style="font-size:.68rem;color:#4e9af1;font-weight:700">Art. 115 CP — Redução do prazo</div>
-          <p style="font-size:.7rem;color:#94a3b8;margin-top:4px;line-height:1.5">Agente maior de 70 anos na data da sentença → prazo prescricional reduzido à metade.</p>
+
+        <div class="gc rv" style="border-left:3px solid #4e9af1">
+          <div style="font-size:.72rem;font-weight:700;color:#4e9af1;margin-bottom:6px">Tipos de Prescrição</div>
+          <ul style="font-size:.69rem;color:#cbd5e1;line-height:1.75;list-style:none;padding:0;margin:0">
+            <li><span style="color:#e8b84b;font-weight:700">Punitiva</span> — antes do trânsito em julgado (arts. 109–110 CP)</li>
+            <li><span style="color:#4e9af1;font-weight:700">Executória</span> — após o trânsito em julgado (art. 110, §1º CP)</li>
+            <li><span style="color:#a78bfa;font-weight:700">Retroativa</span> — calculada entre marcos anteriores à sentença (art. 110, §1º CP)</li>
+            <li><span style="color:#f87171;font-weight:700">Virtual/Antecipada</span> — projeção futura — não admitida pelo STJ (Súm. 438)</li>
+          </ul>
         </div>
+
       </div>
-      <div class="rv">
-        <div style="font-size:.68rem;color:#7a9bbf;font-weight:700;margin-bottom:8px">Prazos — Art. 109 CP</div>
+
+      <!-- COLUNA 2: Caso Lula + Art. 115 -->
+      <div style="display:flex;flex-direction:column;gap:10px">
+
+        <div class="gc rv" style="border-left:3px solid #e8b84b">
+          <div style="font-size:.72rem;font-weight:700;color:#e8b84b;margin-bottom:5px">📋 Caso Concreto — Lula/Triplex</div>
+          <p style="font-size:.70rem;color:#cbd5e1;line-height:1.65">Condenado pela Lava Jato em Curitiba, o STF anulou o processo em 2021 por incompetência de juízo (HC 193.726, Rel. Min. Edson Fachin). Com os processos reiniciando em Brasília, o MPF calculou os prazos: Lula tinha <strong>mais de 70 anos</strong> → prazo prescricional cai pela <strong>metade</strong> (art. 115 CP). Em 27/01/2022 a juíza Pollyanna Martins Alves, da 12.ª VFC/Brasília, declarou a punibilidade extinta.</p>
+        </div>
+
+        <div class="gc rv" style="border-left:3px solid #4e9af1">
+          <div style="font-size:.72rem;font-weight:700;color:#4e9af1;margin-bottom:5px">Art. 115 CP — Redução do prazo</div>
+          <p style="font-size:.70rem;color:#cbd5e1;line-height:1.65">Agente maior de 70 anos na data da sentença → prazo prescricional reduzido à metade. <em>Atualização: Lei n.º 15.160/2025 excluiu a redução nos crimes de violência sexual contra a mulher.</em></p>
+        </div>
+
+      </div>
+
+      <!-- COLUNA 3: Gráfico de prazos -->
+      <div class="gc rv" style="border-left:3px solid #4e9af1">
+        <div style="font-size:.72rem;font-weight:700;color:#4e9af1;margin-bottom:10px">Prazos — Art. 109 CP</div>
         <div style="display:flex;flex-direction:column;gap:7px">
-          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:.63rem;color:#cbd5e1;width:100px">Acima de 12 anos</span><div class="bar-wrap"><div class="bar-fill" data-w="100" style="background:linear-gradient(to right,#e8b84b,#4e9af1)"></div></div><span style="font-size:.63rem;color:#e8b84b;width:36px;text-align:right">20 anos</span></div>
-          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:.63rem;color:#cbd5e1;width:100px">8 a 12 anos</span><div class="bar-wrap"><div class="bar-fill" data-w="76" style="background:linear-gradient(to right,#e8b84b,#4e9af1)"></div></div><span style="font-size:.63rem;color:#e8b84b;width:36px;text-align:right">16 anos</span></div>
-          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:.63rem;color:#cbd5e1;width:100px">4 a 8 anos</span><div class="bar-wrap"><div class="bar-fill" data-w="57" style="background:linear-gradient(to right,#e8b84b,#4e9af1)"></div></div><span style="font-size:.63rem;color:#e8b84b;width:36px;text-align:right">12 anos</span></div>
-          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:.63rem;color:#cbd5e1;width:100px">2 a 4 anos</span><div class="bar-wrap"><div class="bar-fill" data-w="38" style="background:linear-gradient(to right,#e8b84b,#4e9af1)"></div></div><span style="font-size:.63rem;color:#e8b84b;width:36px;text-align:right">8 anos</span></div>
-          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:.63rem;color:#cbd5e1;width:100px">1 a 2 anos</span><div class="bar-wrap"><div class="bar-fill" data-w="24" style="background:linear-gradient(to right,#e8b84b,#4e9af1)"></div></div><span style="font-size:.63rem;color:#e8b84b;width:36px;text-align:right">4 anos</span></div>
-          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:.63rem;color:#cbd5e1;width:100px">Menos de 1 ano</span><div class="bar-wrap"><div class="bar-fill" data-w="14" style="background:linear-gradient(to right,#e8b84b,#4e9af1)"></div></div><span style="font-size:.63rem;color:#e8b84b;width:36px;text-align:right">3 anos</span></div>
+
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:.62rem;color:#94a3b8;margin-bottom:2px"><span>Acima de 12 anos</span><span style="color:#e8b84b;font-weight:700">20 anos</span></div>
+            <div style="background:#1e293b;border-radius:4px;height:8px;overflow:hidden"><div style="width:100%;height:100%;background:linear-gradient(90deg,#e8b84b,#4e9af1);border-radius:4px"></div></div>
+          </div>
+
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:.62rem;color:#94a3b8;margin-bottom:2px"><span>8 a 12 anos</span><span style="color:#e8b84b;font-weight:700">16 anos</span></div>
+            <div style="background:#1e293b;border-radius:4px;height:8px;overflow:hidden"><div style="width:80%;height:100%;background:linear-gradient(90deg,#e8b84b,#4e9af1);border-radius:4px"></div></div>
+          </div>
+
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:.62rem;color:#94a3b8;margin-bottom:2px"><span>4 a 8 anos</span><span style="color:#e8b84b;font-weight:700">12 anos</span></div>
+            <div style="background:#1e293b;border-radius:4px;height:8px;overflow:hidden"><div style="width:60%;height:100%;background:linear-gradient(90deg,#e8b84b,#4e9af1);border-radius:4px"></div></div>
+          </div>
+
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:.62rem;color:#94a3b8;margin-bottom:2px"><span>2 a 4 anos</span><span style="color:#e8b84b;font-weight:700">8 anos</span></div>
+            <div style="background:#1e293b;border-radius:4px;height:8px;overflow:hidden"><div style="width:40%;height:100%;background:linear-gradient(90deg,#e8b84b,#4e9af1);border-radius:4px"></div></div>
+          </div>
+
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:.62rem;color:#94a3b8;margin-bottom:2px"><span>1 a 2 anos</span><span style="color:#e8b84b;font-weight:700">4 anos</span></div>
+            <div style="background:#1e293b;border-radius:4px;height:8px;overflow:hidden"><div style="width:20%;height:100%;background:linear-gradient(90deg,#e8b84b,#4e9af1);border-radius:4px"></div></div>
+          </div>
+
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:.62rem;color:#94a3b8;margin-bottom:2px"><span>Menos de 1 ano</span><span style="color:#e8b84b;font-weight:700">3 anos</span></div>
+            <div style="background:#1e293b;border-radius:4px;height:8px;overflow:hidden"><div style="width:15%;height:100%;background:linear-gradient(90deg,#e8b84b,#4e9af1);border-radius:4px"></div></div>
+          </div>
+
         </div>
       </div>
+
     </div>
   </div>
 </div>
-
-<!-- ===== S7 DECADÊNCIA ===== -->
 <div class="slide" data-s="7">
   <div class="blob" style="width:300px;height:300px;top:-60px;right:-50px;background:#a78bfa;opacity:.09;animation:fl1 10s ease-in-out infinite"></div>
   <div class="blob" style="width:200px;height:200px;bottom:-50px;left:-40px;background:#e8b84b;opacity:.07;animation:fl2 13s ease-in-out infinite"></div>
@@ -421,7 +474,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.02)}
       <div class="gc rv" style="border-left:3px solid #e8b84b">
         <div style="font-size:.72rem;font-weight:700;color:#e8b84b;margin-bottom:8px">📋 Caso Concreto — STJ REsp 45.743/RJ</div>
         <p style="font-size:.75rem;color:#cbd5e1;line-height:1.7;margin-bottom:8px">Querelante ajuizou queixa-crime por <strong>difamação</strong>. Intimado para audiência de instrução, <strong>não compareceu sem justificativa</strong>.</p>
-        <p style="font-size:.75rem;color:#cbd5e1;line-height:1.7;margin-bottom:8px">STJ declarou extinta a punibilidade por perempção, reafirmando que a ausência do querelante à audiência sem motivo é causa automática de extinção.</p>
+        <p style="font-size:.75rem;color:#cbd5e1;line-height:1.7;margin-bottom:8px">O <strong>TJDFT</strong> declarou extinta a punibilidade por perempção (Acórdão n.º 1644642, Proc. 0703458-54.2020.8.07.0020, Rel. Des. J. J. Costa Carvalho, 1.ª Turma Criminal, j. 01/12/2022), reafirmando que a ausência do querelante à audiência sem motivo é causa automática de extinção (art. 60, III, CPP).</p>
         <div style="background:rgba(232,184,75,.08);border-radius:6px;padding:7px 10px;font-size:.68rem;color:#e8b84b">⚖️ Transitado em julgado. Citado em toda a doutrina processual penal.</div>
       </div>
     </div>
@@ -443,7 +496,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.02)}
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
       <div class="gc rv" style="border-top:2px solid #e8b84b">
         <div style="font-size:.72rem;font-weight:700;color:#e8b84b;margin-bottom:6px">Renúncia (art. 104 CP)</div>
-        <p style="font-size:.73rem;color:#cbd5e1;line-height:1.6;margin-bottom:6px">Ato <strong>unilateral</strong> do ofendido <em>antes</em> de ajuizar a ação. Expressa ou tácita (recebimento de indenização). Abrange coautores (indivisibilidade).</p>
+        <p style="font-size:.73rem;color:#cbd5e1;line-height:1.6;margin-bottom:6px">Ato <strong>unilateral</strong> do ofendido <em>antes</em> de ajuizar a ação. Expressa ou tácita — pratica ato incompatível com a vontade de exercer o direito de queixa. <strong>Atenção:</strong> simples recebimento de indenização <em>não</em> configura renúncia tácita (art. 104, § único, CP). Abrange todos os coautores (indivisibilidade — art. 48 CPP).</p>
         <div style="background:rgba(232,184,75,.08);border-radius:6px;padding:7px 10px;font-size:.68rem;color:#e8b84b">Não precisa de aceitação do réu.</div>
       </div>
       <div class="gc rv" style="border-top:2px solid #4e9af1">
@@ -454,7 +507,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.02)}
     </div>
     <div class="gc rv" style="border-left:3px solid #4e9af1;margin-top:12px">
       <div style="font-size:.72rem;font-weight:700;color:#4e9af1;margin-bottom:5px">📋 Caso Concreto — TJBA HC jul/2024</div>
-      <p style="font-size:.73rem;color:#cbd5e1;line-height:1.6">Querelante processou apenas <strong>um</strong> dos dois coautores de declarações ofensivas (crime contra a honra). TJBA declarou <strong>renúncia tácita</strong> em relação a todos — violação ao princípio da <strong>indivisibilidade</strong> da ação penal privada (art. 48 CPP). Punibilidade extinta. Transitado em julgado.</p>
+      <p style="font-size:.73rem;color:#cbd5e1;line-height:1.6">Querelante processou apenas <strong>um</strong> dos dois coautores conhecidos de crime contra a honra. O <strong>STJ, APn 971/DF</strong> (Corte Especial, Rel. Min. Nancy Andrighi, j. 21/09/2022), aplicou o princípio da <strong>indivisibilidade</strong> da ação penal privada (arts. 48 e 49 CPP): a escolha seletiva de acusados configura <strong>renúncia tácita</strong> extensível a todos os coautores. Queixa rejeitada — punibilidade extinta (art. 107, V, CP).</p>
     </div>
   </div>
 </div>
@@ -605,54 +658,55 @@ tr:nth-child(even) td{background:rgba(255,255,255,.02)}
   </div>
 </div>
 
-<div class="slide" data-s="12">
+<div class="slide" data-s="13">
   <div class="blob" style="width:380px;height:380px;top:-100px;right:-80px;background:#e8b84b;opacity:.13;animation:fl1 9s ease-in-out infinite"></div>
   <div class="blob" style="width:260px;height:260px;bottom:-70px;left:-60px;background:#4e9af1;opacity:.10;animation:fl2 12s ease-in-out infinite"></div>
-  <canvas id="pc12" style="position:absolute;inset:0;z-index:1"></canvas>
+  <canvas id="pc13" style="position:absolute;inset:0;z-index:1"></canvas>
+  <div style="position:relative;z-index:2;width:92%;height:96%;padding:8px 0;display:flex;flex-direction:column;gap:8px">
 
-  <div style="position:relative;z-index:2;width:96%;height:96%;display:grid;grid-template-columns:160px 1fr;gap:12px;padding:8px 0;align-items:start">
+    <!-- LINHA PRINCIPAL: QR esquerda + Resultados direita -->
+    <div style="flex:1;min-height:0;display:flex;flex-direction:row;align-items:flex-start;gap:12px">
 
-    <!-- COLUNA ESQUERDA: QR CARD (topo, tamanho natural) -->
-    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;background:rgba(10,22,40,0.85);border:1.5px solid rgba(232,184,75,.3);border-radius:12px;padding:10px 10px;box-sizing:border-box">
-      <div style="background:#fff;border-radius:8px;padding:4px;width:120px;height:120px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        <img src="data:image/png;base64,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" style="width:100%;height:100%;border-radius:8px" alt="QR Code Votação">
+      <!-- COLUNA ESQUERDA: QR fixo no topo, não sobrepõe nada -->
+      <div style="width:160px;flex-shrink:0;display:flex;flex-direction:column;gap:0;align-self:flex-start">
+        <div class="gc rv" style="border:2px solid rgba(232,184,75,.4);padding:12px 10px;display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center">
+          <img src="data:image/png;base64,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" style="width:120px;height:120px;border-radius:8px;background:#fff;padding:3px" alt="QR Code">
+          <p style="font-size:.55rem;color:#94a3b8;line-height:1.3">Escaneie ou acesse:</p>
+          <p style="font-size:.60rem;font-weight:700;color:#e8b84b;line-height:1.5;word-break:break-all">lansolutions.github.io/<span style="color:#4e9af1">grupo7-penal</span></p>
+        </div>
       </div>
-      <p style="font-size:.5rem;color:#94a3b8;text-align:center;line-height:1.4;margin:0">Escaneie ou acesse:</p>
-      <p style="font-size:.56rem;color:#e8b84b;font-weight:700;text-align:center;line-height:1.4;margin:0">lansolutions.github.io/<br>grupo7-penal</p>
+
+      <!-- COLUNA DIREITA: Resultados ao vivo ocupa todo o resto -->
+      <div style="flex:1;min-width:0;min-height:0;height:100%;display:flex;flex-direction:column">
+        <div style="background:rgba(232,184,75,.08);padding:5px 14px;display:flex;align-items:center;gap:8px;border:2px solid rgba(232,184,75,.3);border-radius:12px 12px 0 0;flex-shrink:0">
+          <span style="font-size:.75rem">📊</span>
+          <span style="font-size:.65rem;font-weight:600;color:#e8b84b;letter-spacing:2px;text-transform:uppercase">Resultado ao vivo</span>
+        </div>
+        <div id="s13-results-wrap" style="flex:1;min-height:0;border:2px solid rgba(232,184,75,.3);border-top:none;border-radius:0 0 12px 12px;overflow-y:auto;background:rgba(10,22,40,0.95)"></div>
+      </div>
+
     </div>
 
-    <!-- COLUNA DIREITA: RESULTADOS AO VIVO (altura total) -->
-    <div style="display:flex;flex-direction:column;gap:8px;height:calc(96vh - 16px);min-height:0">
-
-      <!-- HEADER -->
-      <div style="background:rgba(232,184,75,.08);padding:5px 14px;display:flex;align-items:center;gap:8px;border:2px solid rgba(232,184,75,.3);border-radius:12px 12px 0 0;border-bottom:none;flex-shrink:0">
-        <span style="font-size:.75rem">📊</span>
-        <span style="font-size:.65rem;font-weight:600;color:#e8b84b;letter-spacing:2px;text-transform:uppercase">Resultado ao vivo</span>
-      </div>
-
-      <!-- CARDS -->
-      <div id="s13-results-wrap" style="flex:1;min-height:0;border:2px solid rgba(232,184,75,.3);border-top:none;border-radius:0 0 12px 12px;overflow:hidden;background:rgba(10,22,40,0.95)"></div>
-
-      <!-- RODAPÉ -->
-      <div class="rv" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;flex-shrink:0">
-        <div style="display:flex;align-items:center;gap:10px">
-          <span style="font-size:1.5rem;animation:float 3s ease-in-out infinite">⚖️</span>
-          <div>
-            <p style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;background:linear-gradient(135deg,#e8b84b,#4e9af1);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Obrigado!</p>
-            <p style="font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:#7a9bbf">Grupo 7 · Direito Penal · Extinção da Punibilidade</p>
-          </div>
-        </div>
-        <div style="display:flex;gap:6px">
-          <div class="gc" style="padding:5px 9px;text-align:center"><p style="font-size:.52rem;color:#7a9bbf">Base Legal</p><p style="font-size:.68rem;font-weight:700;color:#e8b84b">Art. 107 CP</p></div>
-          <div class="gc" style="padding:5px 9px;text-align:center"><p style="font-size:.52rem;color:#7a9bbf">Casos</p><p style="font-size:.68rem;font-weight:700;color:#4e9af1">8 hipóteses</p></div>
-          <div class="gc" style="padding:5px 9px;text-align:center"><p style="font-size:.52rem;color:#7a9bbf">Local</p><p style="font-size:.68rem;font-weight:700;color:#a78bfa">Eunápolis/BA</p></div>
+    <!-- RODAPÉ OBRIGADO -->
+    <div class="rv" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;flex-shrink:0">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:1.5rem;animation:float 3s ease-in-out infinite">⚖️</span>
+        <div>
+          <p style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;background:linear-gradient(135deg,#e8b84b,#4e9af1);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Obrigado!</p>
+          <p style="font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:#7a9bbf">Grupo 7 · Direito Penal · Extinção da Punibilidade</p>
         </div>
       </div>
-
+      <div style="display:flex;gap:6px">
+        <div class="gc" style="padding:5px 9px;text-align:center"><p style="font-size:.52rem;color:#7a9bbf">Base Legal</p><p style="font-size:.68rem;font-weight:700;color:#e8b84b">Art. 107 CP</p></div>
+        <div class="gc" style="padding:5px 9px;text-align:center"><p style="font-size:.52rem;color:#7a9bbf">Casos</p><p style="font-size:.68rem;font-weight:700;color:#4e9af1">8 hipóteses</p></div>
+        <div class="gc" style="padding:5px 9px;text-align:center"><p style="font-size:.52rem;color:#7a9bbf">Local</p><p style="font-size:.68rem;font-weight:700;color:#a78bfa">Eunápolis/BA</p></div>
+      </div>
     </div>
 
   </div>
 </div>
+
+
 </div><!-- /deck -->
 
 <!-- NAV -->
@@ -786,23 +840,26 @@ onValue(ref(db, "respostas"), s => { respostas = s.val()||{}; render(); });
 function render() {
   const ids = Object.keys(ativas).filter(id => perguntas[id]);
   if (!ids.length) {
-    wrapEl.innerHTML = `<div class="aguarda"><div class="icon">📊</div><p style="font-size:.8rem">Aguardando perguntas ativas...</p></div>`;
+    wrapEl.innerHTML = `<div class="aguarda"><div class="icon">📊</div><p style="font-size:.8rem;color:#7a9bbf;margin-top:8px">Aguardando perguntas ativas...</p></div>`;
     return;
   }
   wrapEl.innerHTML = ids.map(id => renderCard(id)).join("");
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      wrapEl.querySelectorAll('.bar-fill[data-w]').forEach(b => {
-        b.style.width = b.dataset.w + '%';
-      });
+  // Animar barras após render
+  setTimeout(() => {
+    wrapEl.querySelectorAll('.bar-fill[data-w]').forEach((b, i) => {
+      b.style.width = '0';
+      b.style.transition = `width .6s ease ${i * 0.08}s`;
+      requestAnimationFrame(() => { b.style.width = b.dataset.w + '%'; });
     });
-  });
+  }, 60);
 }
 
 function renderCard(id) {
   const p = perguntas[id];
   const raw = respostas[id] ? Object.values(respostas[id]).map(r => r.valor) : [];
   const total = raw.length;
+  const icones = ['✅', '❌', '🔵', '🟡', '🟣'];
+  const cores  = ['#22c55e', '#ef4444', '#4e9af1', '#e8b84b', '#a78bfa'];
   let corpo = "";
 
   if (p.tipo === "wordcloud") {
@@ -811,22 +868,42 @@ function renderCard(id) {
     const sorted = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,20);
     const max = sorted[0]?.[1]||1;
     corpo = `<div class="wc-wrap">${sorted.map(([w,c])=>`<span class="wc-word" style="font-size:${0.7+c/max*0.7}rem">${w}${c>1?` <small style="opacity:.6">${c}</small>`:""}</span>`).join("")}</div>`;
+
   } else if (p.tipo === "enquete") {
-    const opts = p.opcoes||[];
-    const counts = opts.map((_,i)=>raw.filter(r=>String(r)===String(i)).length);
-    corpo = `<div class="bar-list">${opts.map((o,i)=>{
-      const pct = total?Math.round(counts[i]/total*100):0;
-      return `<div class="bar-item"><div class="bar-label"><span>${o}</span><span>${counts[i]} (${pct}%)</span></div><div class="bar-track"><div class="bar-fill" data-w="${pct}" style="width:0"></div></div></div>`;
-    }).join("")}</div>`;
+    const opts = p.opcoes || [];
+    const counts = opts.map((_,i) => raw.filter(r => String(r) === String(i)).length);
+    const maxC = Math.max(...counts, 1);
+    corpo = `<div style="display:flex;flex-direction:column;justify-content:center;gap:5px;width:100%;padding:4px 0">` +
+      opts.map((o, i) => {
+        const pct = total ? Math.round(counts[i] / total * 100) : 0;
+        const isMax = counts[i] === maxC && counts[i] > 0;
+        const cor = cores[i % cores.length];
+        const icone = icones[i % icones.length];
+        return `<div style="display:flex;align-items:center;gap:7px;width:100%">
+          <span style="font-size:.85rem;flex-shrink:0">${icone}</span>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2px">
+              <span style="font-size:.65rem;color:${isMax?'#f1f5f9':'#94a3b8'};font-weight:${isMax?700:400};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:65%">${o}</span>
+              <span style="font-size:.65rem;font-weight:700;color:${cor};flex-shrink:0;margin-left:4px">${counts[i]} (${pct}%)</span>
+            </div>
+            <div style="height:9px;background:rgba(255,255,255,.07);border-radius:4px;overflow:hidden">
+              <div class="bar-fill" data-w="${pct}" style="width:0;height:100%;border-radius:3px;background:${isMax?cor:'rgba('+hexToRgb(cor)+',.55)'};transition:width .6s ease"></div>
+            </div>
+          </div>
+        </div>`;
+      }).join("") + `</div>`;
+
   } else if (p.tipo === "escala") {
-    const nums = raw.map(r=>Number(r)).filter(n=>n>=1&&n<=5);
-    const media = nums.length?(nums.reduce((a,b)=>a+b,0)/nums.length).toFixed(1):"–";
-    const counts = [1,2,3,4,5].map(v=>nums.filter(n=>n===v).length);
-    const maxC = Math.max(...counts,1);
+    const nums = raw.map(r => Number(r)).filter(n => n >= 1 && n <= 5);
+    const media = nums.length ? (nums.reduce((a,b) => a+b, 0) / nums.length).toFixed(1) : "–";
+    const counts = [1,2,3,4,5].map(v => nums.filter(n => n === v).length);
+    const maxC = Math.max(...counts, 1);
     corpo = `<div class="scale-display">
       <div class="scale-num">${media}<span style="font-size:1rem;color:#7a9bbf">/5</span></div>
       <div class="scale-sub">${p.min_label||"Discordo"} ←→ ${p.max_label||"Concordo"}</div>
-      <div class="scale-mini-bars">${counts.map((c,i)=>`<div class="smb ${c===maxC&&c>0?"active":""}" style="height:${Math.max(6,Math.round(c/maxC*88))}%"><span class="smb-lbl">${i+1}</span></div>`).join("")}</div>
+      <div class="scale-mini-bars">${counts.map((c,i) =>
+        `<div class="smb ${c===maxC&&c>0?'active':''}" style="height:${Math.max(6,Math.round(c/maxC*88))}%"><span class="smb-lbl">${i+1}</span></div>`
+      ).join("")}</div>
     </div>`;
   }
 
@@ -838,6 +915,11 @@ function renderCard(id) {
     </div>
     <div class="rcard-right">${corpo}</div>
   </div>`;
+}
+
+function hexToRgb(hex){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return `${r},${g},${b}`;
 }
 
 function tipoLabel(t){return{wordcloud:"☁️ Nuvem",enquete:"⚖️ Enquete",escala:"🌡️ Termômetro"}[t]||t;}
