@@ -1,49 +1,53 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Extinção da Punibilidade — Vote</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{min-height:100%;background:#0a1628;font-family:'Segoe UI',sans-serif;color:#f1f5f9}
-.wrap{max-width:480px;margin:0 auto;padding:20px 16px 40px}
-.logo{text-align:center;padding:16px 0 20px}
-.logo h1{font-size:1.1rem;font-weight:700;color:#e8b84b;letter-spacing:2px;text-transform:uppercase}
-.logo p{font-size:.72rem;color:#475569;margin-top:4px}
-.card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:20px;margin-bottom:16px}
-.badge{font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:#7a9bbf;margin-bottom:8px}
-.pergunta{font-size:1rem;font-weight:600;color:#f1f5f9;line-height:1.5;margin-bottom:18px}
-.wc-input{width:100%;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);border-radius:10px;padding:12px 14px;font-size:1rem;color:#f1f5f9;outline:none}
-.wc-input:focus{border-color:#e8b84b}
-.opt{width:100%;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:13px 16px;font-size:.9rem;color:#f1f5f9;cursor:pointer;margin-bottom:10px;text-align:left;transition:all .2s}
-.opt:hover,.opt.sel{border-color:#e8b84b;background:rgba(232,184,75,.1);color:#e8b84b}
-.scale-wrap{display:flex;flex-direction:column;gap:10px}
-.scale-labels{display:flex;justify-content:space-between;font-size:.65rem;color:#7a9bbf}
-input[type=range]{width:100%;accent-color:#e8b84b;cursor:pointer}
-.scale-val{text-align:center;font-size:.85rem;font-weight:700;color:#e8b84b;margin-top:4px}
-.btn{width:100%;padding:14px;border:none;border-radius:10px;background:linear-gradient(135deg,#e8b84b,#d4a832);color:#0a1628;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:10px;transition:opacity .2s}
-.btn:disabled{opacity:.4;cursor:not-allowed}
-.enviado-badge{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:10px 14px;color:#86efac;font-size:.8rem;text-align:center;margin-top:8px}
-.aguarda{text-align:center;padding:50px 20px;display:flex;flex-direction:column;align-items:center;gap:12px}
-.aguarda .icon{font-size:3rem;animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
-.aguarda h2{font-size:1rem;color:#e8b84b}
-.aguarda p{font-size:.8rem;color:#475569}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Votação — Extinção da Punibilidade</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',sans-serif;background:#0a1628;color:#f1f5f9;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px 16px}
+    h1{font-size:1.3rem;font-weight:800;text-align:center;margin-bottom:4px;background:linear-gradient(135deg,#e8b84b,#4e9af1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .sub{font-size:.72rem;color:#7a9bbf;text-align:center;margin-bottom:20px;letter-spacing:1px}
+    .card{background:rgba(255,255,255,.06);border:1.5px solid rgba(78,154,241,.35);border-radius:14px;padding:18px 16px;width:100%;max-width:480px;margin-bottom:16px}
+    .tipo{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:#7a9bbf;margin-bottom:6px}
+    .pergunta{font-size:.95rem;font-weight:600;color:#f1f5f9;line-height:1.4;margin-bottom:14px}
+    /* Enquete */
+    .opcoes{display:flex;flex-direction:column;gap:8px}
+    .opt-btn{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 14px;cursor:pointer;font-size:.85rem;color:#cbd5e1;transition:all .2s;text-align:left;width:100%}
+    .opt-btn:hover{border-color:#4e9af1;background:rgba(78,154,241,.1)}
+    .opt-btn.selected{border-color:#22c55e;background:rgba(34,197,94,.12);color:#f1f5f9;font-weight:600}
+    .opt-btn.disabled{cursor:not-allowed;opacity:.7}
+    .opt-btn .ico{font-size:1.1rem;flex-shrink:0}
+    /* Escala */
+    .scale-wrap{display:flex;flex-direction:column;gap:10px}
+    .scale-labels{display:flex;justify-content:space-between;font-size:.68rem;color:#7a9bbf}
+    .scale-btns{display:flex;gap:6px;justify-content:center}
+    .scale-btn{flex:1;height:44px;border-radius:8px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.04);color:#cbd5e1;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s}
+    .scale-btn:hover{border-color:#e8b84b;background:rgba(232,184,75,.15)}
+    .scale-btn.selected{border-color:#e8b84b;background:rgba(232,184,75,.25);color:#e8b84b}
+    .scale-btn.disabled{cursor:not-allowed}
+    /* Feedback */
+    .feedback{margin-top:12px;padding:10px 12px;border-radius:8px;font-size:.78rem;font-weight:600;display:none}
+    .feedback.ok{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.4);color:#86efac;display:block}
+    .feedback.update{background:rgba(78,154,241,.15);border:1px solid rgba(78,154,241,.4);color:#93c5fd;display:block}
+    /* Aguarda */
+    .aguarda{text-align:center;padding:40px 20px;color:#475569}
+    .aguarda .icon{font-size:2.5rem;margin-bottom:12px}
+    /* Scrollbar */
+    ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#334155;border-radius:2px}
+    .device-id{font-size:.55rem;color:#1e3a5f;text-align:center;margin-top:24px;word-break:break-all;padding:0 20px}
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="logo">
-    <h1>⚖️ Extinção da Punibilidade</h1>
-    <p>Grupo 7 · Direito Penal · 3º Semestre 2026/1</p>
-  </div>
-  <div id="app"></div>
-</div>
+  <h1>⚖️ Extinção da Punibilidade</h1>
+  <p class="sub">GRUPO 7 · DIREITO PENAL · VOTE AO VIVO</p>
+  <div id="app"><div class="aguarda"><div class="icon">⏳</div><p>Carregando perguntas...</p></div></div>
+  <p class="device-id" id="did-label"></p>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, onValue, push } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCcpZjXuHspxtWU5uibac7BjB9J-ye6bOk",
@@ -57,78 +61,145 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-const appEl = document.getElementById("app");
-let perguntas = {};
-let ativas = {};
-let jaVotou = JSON.parse(localStorage.getItem("jaVotou") || "{}");
 
-// Escuta perguntas
-onValue(ref(db, "perguntas"), (snap) => { perguntas = snap.val() || {}; render(); });
-onValue(ref(db, "ativas"), (snap) => { ativas = snap.val() || {}; render(); });
+// ─── DEVICE FINGERPRINT (sem cookie, sem MAC) ───────────────────────────────
+async function getDeviceId() {
+  const raw = [
+    navigator.userAgent,
+    navigator.language,
+    navigator.platform || '',
+    screen.width + 'x' + screen.height,
+    screen.colorDepth,
+    Intl.DateTimeFormat().resolvedOptions().timeZone,
+    navigator.hardwareConcurrency || '',
+    navigator.deviceMemory || '',
+    getCanvasFingerprint()
+  ].join('|');
 
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(raw));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('').slice(0, 32);
+}
+
+function getCanvasFingerprint() {
+  try {
+    const c = document.createElement('canvas');
+    const ctx = c.getContext('2d');
+    ctx.textBaseline = 'top';
+    ctx.font = '14px Arial';
+    ctx.fillStyle = '#e8b84b';
+    ctx.fillText('penal-grupo7-fp', 2, 2);
+    return c.toDataURL().slice(-40);
+  } catch { return 'no-canvas'; }
+}
+
+// ─── ESTADO ──────────────────────────────────────────────────────────────────
+let perguntas = {}, ativas = {}, respostas = {}, deviceId = '';
+// votos locais da sessão: { [perguntaId]: valorVotado }
+// NÃO persiste entre atualizações — assim o user pode responder de novo
+const votosLocais = {};
+
+onValue(ref(db, 'perguntas'), s => { perguntas = s.val() || {}; render(); });
+onValue(ref(db, 'ativas'),    s => { ativas    = s.val() || {}; render(); });
+onValue(ref(db, 'respostas'), s => { respostas = s.val() || {}; render(); });
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
 function render() {
   const ids = Object.keys(ativas).filter(id => perguntas[id]);
+  const app = document.getElementById('app');
   if (!ids.length) {
-    appEl.innerHTML = `<div class="aguarda"><div class="icon">⏳</div><h2>Aguardando perguntas...</h2><p>O professor vai liberar em breve.</p></div>`;
+    app.innerHTML = '<div class="aguarda"><div class="icon">📊</div><p>Aguardando o professor ativar uma pergunta...</p></div>';
     return;
   }
-  appEl.innerHTML = ids.map(id => renderCard(id)).join("");
+  app.innerHTML = ids.map(id => renderCard(id)).join('');
 }
 
 function renderCard(id) {
   const p = perguntas[id];
-  if (jaVotou[id]) {
-    return `<div class="card" id="card-${id}">
-      <div class="badge">${tipoLabel(p.tipo)}</div>
-      <div class="pergunta">${p.texto}</div>
-      <div class="enviado-badge">✅ Resposta enviada!</div>
+  const votoAtual = respostas[id]?.[deviceId]?.valor ?? null;
+  const votouNaSessao = votosLocais[id] !== undefined;
+  const tipo = p.tipo;
+  const tipoLabel = { enquete: '⚖️ Enquete', escala: '🌡️ Termômetro', wordcloud: '☁️ Nuvem de Palavras' }[tipo] || tipo;
+  const disabled = votouNaSessao;
+
+  let corpo = '';
+
+  if (tipo === 'enquete') {
+    const opts = p.opcoes || [];
+    const icones = ['✅','❌','🔵','🟡','🟣'];
+    corpo = `<div class="opcoes">${opts.map((o, i) => {
+      const sel = votosLocais[id] === String(i) ? 'selected' : '';
+      const dis = disabled ? 'disabled' : '';
+      return `<button class="opt-btn ${sel} ${dis}" onclick="votar('${id}','${i}',this)" ${disabled?'disabled':''}>
+        <span class="ico">${icones[i % icones.length]}</span><span>${o}</span>
+      </button>`;
+    }).join('')}</div>`;
+
+  } else if (tipo === 'escala') {
+    corpo = `<div class="scale-wrap">
+      <div class="scale-labels"><span>${p.min_label||'Discordo totalmente'}</span><span>${p.max_label||'Concordo totalmente'}</span></div>
+      <div class="scale-btns">${[1,2,3,4,5].map(v => {
+        const sel = votosLocais[id] === String(v) ? 'selected' : '';
+        const dis = disabled ? 'disabled' : '';
+        return `<button class="scale-btn ${sel} ${dis}" onclick="votar('${id}','${v}',this)" ${disabled?'disabled':''}>${v}</button>`;
+      }).join('')}</div>
+    </div>`;
+
+  } else if (tipo === 'wordcloud') {
+    corpo = `<div class="opcoes">
+      <input id="wc-${id}" type="text" maxlength="30" placeholder="Digite sua resposta..."
+        style="background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 14px;color:#f1f5f9;font-size:.9rem;width:100%"
+        ${disabled?'disabled':''}>
+      ${!disabled ? `<button class="opt-btn" style="justify-content:center;margin-top:4px" onclick="votarTexto('${id}')">Enviar</button>` : ''}
     </div>`;
   }
-  let campos = "";
-  if (p.tipo === "wordcloud") {
-    campos = `<input class="wc-input" id="resp-${id}" type="text" placeholder="Digite uma palavra..." maxlength="30">`;
-  } else if (p.tipo === "enquete") {
-    campos = (p.opcoes||[]).map((o,i) =>
-      `<button class="opt" onclick="selOpt(this,'${id}',${i})">${o}</button>`
-    ).join("") + `<input type="hidden" id="resp-${id}" value="">`;
-  } else if (p.tipo === "escala") {
-    campos = `<div class="scale-wrap">
-      <div class="scale-labels"><span>${p.min_label||"Discordo totalmente"}</span><span>${p.max_label||"Concordo totalmente"}</span></div>
-      <input type="range" id="resp-${id}" min="1" max="5" value="3" oninput="document.getElementById('sv-${id}').textContent=this.value">
-      <div class="scale-val" id="sv-${id}">3</div>
-    </div>`;
-  }
-  return `<div class="card" id="card-${id}">
-    <div class="badge">${tipoLabel(p.tipo)}</div>
+
+  const feedbackMsg = votouNaSessao
+    ? `✅ Resposta registrada! Atualize a página se quiser alterar.`
+    : '';
+
+  return `<div class="card">
+    <div class="tipo">${tipoLabel}</div>
     <div class="pergunta">${p.texto}</div>
-    ${campos}
-    <button class="btn" onclick="enviar('${id}')">Enviar resposta</button>
+    ${corpo}
+    <div class="feedback ok" id="fb-${id}" ${votouNaSessao?'style="display:block"':''}>${feedbackMsg}</div>
   </div>`;
 }
 
-window.selOpt = (el, id, idx) => {
-  document.querySelectorAll(`#card-${id} .opt`).forEach(o => o.classList.remove("sel"));
-  el.classList.add("sel");
-  document.getElementById("resp-"+id).value = idx;
+// ─── VOTAR ───────────────────────────────────────────────────────────────────
+window.votar = async function(id, valor, btn) {
+  if (votosLocais[id] !== undefined) return; // já votou nesta sessão
+  votosLocais[id] = String(valor);
+  // Salva usando deviceId como chave → sobrescreve voto anterior do mesmo dispositivo
+  await set(ref(db, `respostas/${id}/${deviceId}`), { valor: String(valor), ts: Date.now() });
+  // Desabilitar botões e mostrar feedback
+  document.querySelectorAll(`[onclick^="votar('${id}'"]`).forEach(b => {
+    b.classList.add('disabled'); b.disabled = true;
+  });
+  btn.classList.add('selected');
+  const fb = document.getElementById(`fb-${id}`);
+  if (fb) { fb.textContent = '✅ Resposta registrada! Atualize a página se quiser alterar.'; fb.className = 'feedback ok'; }
 };
 
-window.enviar = async (id) => {
-  const respEl = document.getElementById("resp-"+id);
-  const val = respEl ? respEl.value : "";
-  if (val === "" && perguntas[id].tipo !== "escala") return;
-  const btn = document.querySelector(`#card-${id} .btn`);
-  if (btn) { btn.disabled = true; btn.textContent = "Enviando..."; }
-  try {
-    await push(ref(db, "respostas/" + id), { valor: val || "3", ts: Date.now() });
-    jaVotou[id] = true;
-    localStorage.setItem("jaVotou", JSON.stringify(jaVotou));
-    render();
-  } catch(e) { alert("Erro ao enviar: " + e.message); if (btn) { btn.disabled = false; btn.textContent = "Enviar resposta"; } }
+window.votarTexto = async function(id) {
+  if (votosLocais[id] !== undefined) return;
+  const val = document.getElementById(`wc-${id}`)?.value?.trim();
+  if (!val) return;
+  votosLocais[id] = val;
+  await set(ref(db, `respostas/${id}/${deviceId}`), { valor: val, ts: Date.now() });
+  const fb = document.getElementById(`fb-${id}`);
+  if (fb) { fb.textContent = '✅ Resposta registrada! Atualize a página se quiser alterar.'; fb.className = 'feedback ok'; }
+  const inp = document.getElementById(`wc-${id}`);
+  if (inp) inp.disabled = true;
 };
 
-function tipoLabel(t) {
-  return {wordcloud:"☁️ Nuvem de Palavras",enquete:"⚖️ Enquete",escala:"🌡️ Termômetro"}[t]||t;
-}
+// ─── INIT ────────────────────────────────────────────────────────────────────
+getDeviceId().then(id => {
+  deviceId = id;
+  // Mostrar fragmento do ID para debug (opcional — pode remover)
+  const label = document.getElementById('did-label');
+  if (label) label.textContent = 'ID: ' + id.slice(0,8) + '...';
+  render();
+});
 </script>
 </body>
 </html>
